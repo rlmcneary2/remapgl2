@@ -27,8 +27,11 @@
   },
   "private": true,
   "dependencies": {
+    "@mapbox/togeojson": "^0.16.0",
+    "@turf/bbox": "^6.3.0",
     "core-js": "^3.6.5",
     "document-register-element": "1.13.1",
+    "mapbox-gl": "^2.1.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "tslib": "^2.0.0"
@@ -49,6 +52,7 @@
     "@nrwl/workspace": "11.4.0",
     "@testing-library/react": "11.1.2",
     "@types/jest": "26.0.8",
+    "@types/mapbox-gl": "^2.1.0",
     "@types/node": "12.12.38",
     "@types/react": "16.9.56",
     "@types/react-dom": "16.9.9",
@@ -62,12 +66,20 @@
     "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-hooks": "4.2.0",
     "jest": "26.2.2",
+    "nx": "^11.4.0",
     "prettier": "2.2.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "ts-jest": "26.4.0",
     "ts-node": "~9.1.1",
     "typescript": "~4.0.3"
+  },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   }
 }

@@ -1,23 +1,12 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
+  "cli": { "defaultCollection": "@nrwl/react" },
   "defaultProject": "test-app",
   "generators": {
     "@nrwl/react": {
-      "application": {
-        "style": "css",
-        "linter": "eslint",
-        "babel": true
-      },
-      "component": {
-        "style": "css"
-      },
-      "library": {
-        "style": "css",
-        "linter": "eslint"
-      }
+      "application": { "style": "css", "linter": "eslint", "babel": true },
+      "component": { "style": "css" },
+      "library": { "style": "css", "linter": "eslint" }
     }
   },
   "projects": {
@@ -70,13 +59,9 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "test-app:build"
-          },
+          "options": { "buildTarget": "test-app:build" },
           "configurations": {
-            "production": {
-              "buildTarget": "test-app:build:production"
-            }
+            "production": { "buildTarget": "test-app:build:production" }
           }
         },
         "lint": {
@@ -95,28 +80,23 @@
         }
       }
     },
-    "test-app-e2e": {
-      "root": "apps/test-app-e2e",
-      "sourceRoot": "apps/test-app-e2e/src",
-      "projectType": "application",
+    "remapgl": {
+      "root": "libs/remapgl",
+      "sourceRoot": "libs/remapgl/src",
+      "projectType": "library",
       "targets": {
-        "e2e": {
-          "executor": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/test-app-e2e/cypress.json",
-            "tsConfig": "apps/test-app-e2e/tsconfig.e2e.json",
-            "devServerTarget": "test-app:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "test-app:serve:production"
-            }
-          }
-        },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/test-app-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": ["libs/remapgl/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/remapgl"],
+          "options": {
+            "jestConfig": "libs/remapgl/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
