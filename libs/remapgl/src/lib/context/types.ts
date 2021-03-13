@@ -2,13 +2,12 @@ import { LngLatLike, Map as MapGL } from "mapbox-gl";
 import { AnyLayer, AnySourceData } from "mapbox-gl";
 
 export interface ContextActions {
-  addLayer: (layer: Layer) => void;
-  removeLayer: (id: string) => void;
+  setLayerOrder: (layers: AnyLayer["id"][]) => void;
   setMapGL: (mapGL: MapGL) => void;
 }
 
 export interface ContextState {
-  layers: AnyLayer["id"][];
+  layerOrder: AnyLayer["id"][];
   mapElem: React.MutableRefObject<HTMLDivElement>;
   mapGL: MapGL;
 }

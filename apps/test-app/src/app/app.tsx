@@ -1,9 +1,15 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { FeatureCollection, Geometry } from "geojson";
+import { CircleLayer } from "mapbox-gl";
 import { Layer, RemapGL, Marker } from "@remapgl/remapgl";
-import { AnySourceData, GeoJSONSourceRaw } from "mapbox-gl";
 
 export default function App() {
   const ref = useRef();
+  const [layers, setLayers] = useState(layerData);
+
+  useEffect(() => {
+    setTimeout(() => setLayers(current => [...current.reverse()]), 3000);
+  }, []);
 
   return (
     <RemapGL
@@ -11,16 +17,19 @@ export default function App() {
       ref={ref}
     >
       <Marker lnglat={{ lng: -68.2954881, lat: 44.3420759 }} />
-      <Layer
-        id="Layer1"
-        source={{ data, type: "geojson" } as any}
-        type="circle"
-      />
+      {layers.map(({ id, ...props }: any) => (
+        <Layer
+          {...props}
+          id={id}
+          key={id}
+          on={["mouseOver", () => console.log(`${id} on mouseover`)]}
+        />
+      ))}
     </RemapGL>
   );
 }
 
-const data = {
+const data: FeatureCollection<Geometry, { [name: string]: any }> = {
   features: [
     {
       geometry: {
@@ -126,17 +135,15 @@ const paint = {
   }
 };
 
-const layerData = [
+const layerData: CircleLayer[] = [
   {
     id: "black",
-    onMouseover: () => console.log("black layer"),
     paint,
     source: { data, type: "geojson" },
     type: "circle"
   },
   {
     id: "red",
-    onMouseover: () => console.log("red layer"),
     paint: { ...paint, "circle-color": "#F22" },
     source: { data, type: "geojson" },
     type: "circle"

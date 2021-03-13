@@ -3,7 +3,7 @@ import { LngLatLike, Marker as MarkerGL } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
 
 export function Marker({ lnglat }: Props) {
-  console.log("Marker");
+  // console.log("Marker");
   const { mapGL } = useMapGL();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export function Marker({ lnglat }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log("Marker: EXIT");
+  // console.log("Marker: EXIT");
   return null;
 }
 
