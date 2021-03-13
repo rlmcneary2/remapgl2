@@ -11,68 +11,68 @@ import { useContextValue, useMapGL } from "./context";
 export const Map = React.forwardRef<
   HTMLDivElement,
   React.PropsWithChildren<Props>
->(
-  (
-    { accessToken, center, children, cssFile, mapStyle, zoom, ...props },
-    refArg
-  ) => {
-    const ref = useRef<HTMLDivElement>();
-    const { layerOrder, setLayerOrder } =
-      useContextValue(
-        state => ({
-          layerOrder: state?.layerOrder,
-          setLayerOrder: state?.setLayerOrder
-        }),
-        true
-      ) ?? {};
-    const { ready, mapGL, setMapContainer } = useMapGL({
-      accessToken,
-      cssFile,
-      mapStyle,
-      zoom
+>(MapInternal);
+
+function MapInternal(
+  { accessToken, center, children, cssFile, mapStyle, zoom, ...props },
+  refArg: React.Ref<HTMLDivElement>
+) {
+  const ref = useRef<HTMLDivElement>();
+  const { layerOrder, setLayerOrder } =
+    useContextValue(
+      state => ({
+        layerOrder: state?.layerOrder,
+        setLayerOrder: state?.setLayerOrder
+      }),
+      true
+    ) ?? {};
+  const { ready, mapGL, setMapContainer } = useMapGL({
+    accessToken,
+    cssFile,
+    mapStyle,
+    zoom
+  });
+
+  useEffect(() => {
+    if (!ready) {
+      return;
+    }
+
+    (refArg as MutableRefObject<HTMLElement>).current = ref.current;
+    setMapContainer(ref.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
+
+  // The order of layer IDs needs to be tracked since layers are actually
+  // rendered by the map in its canvas, if the layers have to be reordered
+  // based on the order of children the Map will need to do that.
+  useMemo(() => {
+    if (!setLayerOrder) {
+      return;
+    }
+
+    const nextLayerOrder: string[] = [];
+    React.Children.forEach(children, child => {
+      if (!isLayer(child)) {
+        return;
+      }
+
+      if (!child?.props?.id) {
+        throw Error("Layers does not have the required `id` prop.");
+      }
+
+      nextLayerOrder.push(child.props.id);
     });
 
-    useEffect(() => {
-      if (!ready) {
-        return;
-      }
+    updateLayerIds(layerOrder, nextLayerOrder, setLayerOrder);
+  }, [children, layerOrder, setLayerOrder]);
 
-      (refArg as MutableRefObject<HTMLElement>).current = ref.current;
-      setMapContainer(ref.current);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ready]);
-
-    // The order of layer IDs needs to be tracked since layers are actually
-    // rendered by the map in its canvas, if the layers have to be reordered
-    // based on the order of children the Map will need to do that.
-    useMemo(() => {
-      if (!setLayerOrder) {
-        return;
-      }
-
-      const nextLayerOrder: string[] = [];
-      React.Children.forEach(children, child => {
-        if (!isLayer(child)) {
-          return;
-        }
-
-        if (!child?.props?.id) {
-          throw Error("Layers does not have the required `id` prop.");
-        }
-
-        nextLayerOrder.push(child.props.id);
-      });
-
-      updateLayerIds(layerOrder, nextLayerOrder, setLayerOrder);
-    }, [children, layerOrder, setLayerOrder]);
-
-    return (
-      <div ref={ref} {...props}>
-        {mapGL ? children : null}
-      </div>
-    );
-  }
-);
+  return (
+    <div ref={ref} {...props}>
+      {mapGL ? children : null}
+    </div>
+  );
+}
 
 function isJSXElementConstructor<P = any>(
   type: any
