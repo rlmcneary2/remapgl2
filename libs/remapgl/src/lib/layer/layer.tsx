@@ -7,18 +7,19 @@ import {
   MapLayerMouseEvent,
   MapLayerTouchEvent
 } from "mapbox-gl";
+import { LayerProps } from "../types";
 import { useContextValue } from "../context";
 import { useMapGL } from "../context/use-mapgl";
+import { useLayer } from "./use-layer";
 
-export function Layer({ on, ...props }: Props) {
+export function Layer(props: LayerProps) {
   const layerOrder = useContextValue(state => state?.layerOrder);
   const added = useRef(false);
   const index = useRef(null);
   const { mapGL } = useMapGL();
+  useLayer(mapGL, props);
 
   const { id, paint, source, type } = props as LayerGL;
-
-  // TODO connect the `on` prop to the mapGL;
 
   /**
    * Add the layer to the map.
@@ -65,24 +66,5 @@ export function Layer({ on, ...props }: Props) {
     }
   }, [id, layerOrder, mapGL]);
 
-  useEffect(() => {
-    const [type, listener] = on;
-    console.log(`Layer[${id}]: add listener.`);
-    mapGL.on(type, id, listener);
-    return () => {
-      console.log(`Layer[${id}]: remove listener.`);
-      mapGL.off(type, id, listener);
-    };
-  }, [id, mapGL, on]);
-
   return null;
 }
-
-type Props = AnyLayer & {
-  on?: [
-    type: keyof MapLayerEventType,
-    listener: (
-      evt: (MapLayerMouseEvent | MapLayerTouchEvent) & EventData
-    ) => void
-  ];
-};

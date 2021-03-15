@@ -25,7 +25,7 @@ export default function App() {
           {...props}
           id={id}
           key={id}
-          on={["mouseover", () => console.log(`${id} on mouseover`)]}
+          on={[["mouseover", () => console.log(`${id} on mouseover`)]]}
         />
       ))}
     </RemapGL>
