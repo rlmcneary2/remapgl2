@@ -2,7 +2,6 @@ import React, {
   JSXElementConstructor,
   MutableRefObject,
   useEffect,
-  useMemo,
   useRef
 } from "react";
 import { MapGLOptions } from "./context/types";
@@ -46,7 +45,7 @@ function MapInternal(
   // The order of layer IDs needs to be tracked since layers are actually
   // rendered by the map in its canvas, if the layers have to be reordered
   // based on the order of children the Map will need to do that.
-  useMemo(() => {
+  useEffect(() => {
     if (!setLayerOrder) {
       return;
     }

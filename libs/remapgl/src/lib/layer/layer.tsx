@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
 import {
   AnyLayer,
+  EventData,
   Layer as LayerGL,
-  MapBoxZoomEvent,
-  MapDataEvent,
-  MapMouseEvent,
-  MapTouchEvent,
-  MapWheelEvent
+  MapLayerEventType,
+  MapLayerMouseEvent,
+  MapLayerTouchEvent
 } from "mapbox-gl";
 import { useContextValue } from "../context";
 import { useMapGL } from "../context/use-mapgl";
@@ -66,17 +65,24 @@ export function Layer({ on, ...props }: Props) {
     }
   }, [id, layerOrder, mapGL]);
 
+  useEffect(() => {
+    const [type, listener] = on;
+    console.log(`Layer[${id}]: add listener.`);
+    mapGL.on(type, id, listener);
+    return () => {
+      console.log(`Layer[${id}]: remove listener.`);
+      mapGL.off(type, id, listener);
+    };
+  }, [id, mapGL, on]);
+
   return null;
 }
 
 type Props = AnyLayer & {
-  on?: [type: string, listener: (evt: OnEvent) => void];
-  source: LayerGL["source"];
+  on?: [
+    type: keyof MapLayerEventType,
+    listener: (
+      evt: (MapLayerMouseEvent | MapLayerTouchEvent) & EventData
+    ) => void
+  ];
 };
-
-type OnEvent =
-  | MapBoxZoomEvent
-  | MapDataEvent
-  | MapMouseEvent
-  | MapTouchEvent
-  | MapWheelEvent;

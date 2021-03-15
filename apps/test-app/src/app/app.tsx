@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FeatureCollection, Geometry } from "geojson";
-import { CircleLayer } from "mapbox-gl";
+import { CircleLayer, CirclePaint } from "mapbox-gl";
 import { Layer, RemapGL, Marker } from "@remapgl/remapgl";
 
 export default function App() {
@@ -16,16 +16,35 @@ export default function App() {
       accessToken="pk.eyJ1IjoicmxtY25lYXJ5MiIsImEiOiJjajgyZjJuMDAyajJrMndzNmJqZDFucTIzIn0.BYE_k7mYhhVCdLckWeTg0g"
       ref={ref}
     >
-      <Marker lnglat={{ lng: -68.2954881, lat: 44.3420759 }} />
-      {layers.map(({ id, ...props }: any) => (
+      {/* <Marker draggable={true} lnglat={{ lng: -68.2954881, lat: 44.3420759 }}>
+        <MarkerElement />
+      </Marker> */}
+      <Marker draggable={true} lnglat={{ lng: -68.2954881, lat: 44.3420759 }} />
+      {layers.map(({ id, ...props }) => (
         <Layer
           {...props}
           id={id}
           key={id}
-          on={["mouseOver", () => console.log(`${id} on mouseover`)]}
+          on={["mouseover", () => console.log(`${id} on mouseover`)]}
         />
       ))}
     </RemapGL>
+  );
+}
+
+function MarkerElement() {
+  console.log("MarkerElement");
+  return (
+    <section
+      style={{
+        backgroundColor: "yellow",
+        color: "black",
+        height: "50px",
+        width: "50px"
+      }}
+    >
+      hello
+    </section>
   );
 }
 
@@ -115,7 +134,7 @@ const data: FeatureCollection<Geometry, { [name: string]: any }> = {
   type: "FeatureCollection"
 };
 
-const paint = {
+const paint: CirclePaint = {
   "circle-color": "#222",
   "circle-radius": {
     base: 1.15,
