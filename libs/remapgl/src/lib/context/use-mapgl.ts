@@ -1,25 +1,21 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import mapboxgl, { LngLatLike, Map as MapGL } from "mapbox-gl";
-import { MapGLOptions } from "./types";
+import mapboxgl, { Map as MapGL } from "mapbox-gl";
+import { MapOptions } from "./types";
 import { Context } from "./context";
 
-const DEFAULT_CENTER: LngLatLike = { lng: -68.2954881, lat: 44.3420759 };
 const DEFAULT_MAPBOXGL_CSS =
   "//api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css";
 const DEFAULT_MAPBOX_STYLE = "mapbox://styles/mapbox/outdoors-v11";
-const DEFAULT_ZOOM = 9;
 
-export function useMapGL(options?: MapGLOptions) {
+export function useMapGL(options?: MapOptions) {
   const { mapGL, setMapGL } = useContext(Context);
   const [cssStatus, setCssStatus] = useState<"error" | "loaded">(null);
   const mapCreated = useRef(false);
 
   const {
     accessToken,
-    center = DEFAULT_CENTER,
     cssFile = DEFAULT_MAPBOXGL_CSS,
-    mapStyle = DEFAULT_MAPBOX_STYLE,
-    zoom = DEFAULT_ZOOM
+    mapStyle = DEFAULT_MAPBOX_STYLE
   } = options ?? {};
 
   /**
@@ -58,11 +54,10 @@ export function useMapGL(options?: MapGLOptions) {
 
       (async function () {
         const map = await createMap({
+          ...options,
           accessToken,
-          center,
           container,
-          mapStyle,
-          zoom
+          mapStyle
         });
         setMapGL(map);
       })();
@@ -82,7 +77,7 @@ async function createMap({
   accessToken,
   mapStyle,
   ...options
-}: Omit<MapGLOptions, "cssFile"> & { container: HTMLElement }) {
+}: Omit<MapOptions, "cssFile"> & { container: HTMLElement }) {
   mapboxgl.accessToken = mapboxgl.accessToken || accessToken;
 
   const map = new MapGL({ ...options, style: mapStyle });

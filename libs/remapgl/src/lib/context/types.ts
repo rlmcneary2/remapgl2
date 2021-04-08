@@ -1,4 +1,4 @@
-import { LngLatLike, Map as MapGL } from "mapbox-gl";
+import { Map as MapGL, MapboxOptions as MapboxOptionsGL } from "mapbox-gl";
 import { AnyLayer, AnySourceData } from "mapbox-gl";
 
 export interface ContextActions {
@@ -18,10 +18,9 @@ export type Layer = AnyLayer & {
   source: AnySourceData;
 };
 
-export interface MapGLOptions {
+export interface MapOptions
+  extends Omit<MapboxOptionsGL, "accessToken" | "container" | "style"> {
   accessToken: string;
-  center?: LngLatLike;
   cssFile?: string;
   mapStyle?: string;
-  zoom?: number;
 }

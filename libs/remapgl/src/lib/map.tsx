@@ -2,9 +2,10 @@ import React, {
   JSXElementConstructor,
   MutableRefObject,
   useEffect,
+  useMemo,
   useRef
 } from "react";
-import { MapGLOptions } from "./context/types";
+import { MapOptions } from "./context/types";
 import { useContextValue, useMapGL } from "./context";
 
 export const Map = React.forwardRef<
@@ -13,7 +14,7 @@ export const Map = React.forwardRef<
 >(MapInternal);
 
 function MapInternal(
-  { accessToken, center, children, cssFile, mapStyle, zoom, ...props },
+  { children, ...props }: Props,
   refArg: React.Ref<HTMLDivElement>
 ) {
   const ref = useRef<HTMLDivElement>();
@@ -25,12 +26,10 @@ function MapInternal(
       }),
       true
     ) ?? {};
-  const { ready, mapGL, setMapContainer } = useMapGL({
-    accessToken,
-    cssFile,
-    mapStyle,
-    zoom
-  });
+  const { htmlProps, mapOptions } = useMemo(() => separateProps(props), [
+    props
+  ]);
+  const { ready, mapGL, setMapContainer } = useMapGL(mapOptions);
 
   useEffect(() => {
     if (!ready) {
@@ -67,7 +66,7 @@ function MapInternal(
   }, [children, layerOrder, setLayerOrder]);
 
   return (
-    <div ref={ref} {...props}>
+    <div ref={ref} {...htmlProps}>
       {mapGL ? children : null}
     </div>
   );
@@ -98,6 +97,129 @@ function isLayer(
 
 function isReactElement(child: any): child is React.ReactElement {
   return typeof child === "object" && child?.type instanceof Function;
+}
+
+function separateProps(props: Props) {
+  const {
+    accessToken,
+    antialias,
+    attributionControl,
+    bearing,
+    bearingSnap,
+    bounds,
+    boxZoom,
+    center,
+    clickTolerance,
+    collectResourceTiming,
+    crossSourceCollisions,
+    customAttribution,
+    doubleClickZoom,
+    dragPan,
+    dragRotate,
+    fadeDuration,
+    failIfMajorPerformanceCaveat,
+    fitBoundsOptions,
+    hash,
+    interactive,
+    keyboard,
+    locale,
+    localFontFamily,
+    localIdeographFontFamily,
+    logoPosition,
+    mapStyle,
+    maxBounds,
+    maxPitch,
+    maxTileCacheSize,
+    maxZoom,
+    minPitch,
+    minZoom,
+    optimizeForTerrain,
+    pitch,
+    pitchWithRotate,
+    preserveDrawingBuffer,
+    refreshExpiredTiles,
+    renderWorldCopies,
+    scrollZoom,
+    touchPitch,
+    touchZoomRotate,
+    trackResize,
+    transformRequest,
+    zoom,
+    ...htmlProps
+  } = props;
+
+  let mapOptions: MapOptions = {
+    accessToken,
+    antialias,
+    attributionControl,
+    bearing,
+    bearingSnap,
+    bounds,
+    boxZoom,
+    center,
+    clickTolerance,
+    collectResourceTiming,
+    crossSourceCollisions,
+    customAttribution,
+    doubleClickZoom,
+    dragPan,
+    dragRotate,
+    fadeDuration,
+    failIfMajorPerformanceCaveat,
+    fitBoundsOptions,
+    hash,
+    interactive,
+    keyboard,
+    locale,
+    localFontFamily,
+    localIdeographFontFamily,
+    logoPosition,
+    mapStyle,
+    maxBounds,
+    maxPitch,
+    maxTileCacheSize,
+    maxZoom,
+    minPitch,
+    minZoom,
+    optimizeForTerrain,
+    pitch,
+    pitchWithRotate,
+    preserveDrawingBuffer,
+    refreshExpiredTiles,
+    renderWorldCopies,
+    scrollZoom,
+    touchPitch,
+    touchZoomRotate,
+    trackResize,
+    transformRequest,
+    zoom
+  };
+
+  // Mapbox does not like keys with a value of undefined so strip them off here.
+  mapOptions = Object.keys(mapOptions)
+    .filter(key => mapOptions[key] !== undefined)
+    .reduce<MapOptions>(
+      (output, key) => {
+        output[key] = mapOptions[key];
+        return output;
+      },
+      { accessToken: mapOptions.accessToken }
+    );
+
+  const result: {
+    htmlProps: Partial<
+      React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLDivElement>,
+        HTMLDivElement
+      >
+    >;
+    mapOptions: MapOptions;
+  } = {
+    htmlProps,
+    mapOptions
+  };
+
+  return result;
 }
 
 function updateLayerIds(
@@ -132,4 +254,4 @@ interface Props
         HTMLDivElement
       >
     >,
-    MapGLOptions {}
+    MapOptions {}

@@ -1,48 +1,80 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import { LngLatLike, Marker as MarkerGL, MarkerOptions } from "mapbox-gl";
-import { useMapGL } from "../context/use-mapgl";
+import { Marker as MarkerGL, Popup as PopupGL } from "mapbox-gl";
+import { HasPopup, MbxObj } from "../types";
+import { Options, useMarker } from "./use-marker";
+import { Popup } from "../popup/popup";
 
 export function Marker({
   children,
-  lnglat,
+  obj,
+  popup,
   ...options
 }: React.PropsWithChildren<Props>) {
   children && React.Children.only(children);
 
-  const { mapGL } = useMapGL();
-  const [marker, setMarker] = useState<MarkerGL>(null);
+  const [, setDomConfigured] = useState(false);
   const markerPortal = useRef<React.ReactPortal>(null);
+  const markerElement = useRef<HTMLElement>(null);
+  const popupElement = useRef<HTMLElement>(null);
+  const marker = useMarker(options, !children ? false : markerElement.current);
+  const markerExists = useRef(false);
 
   useEffect(() => {
-    if (marker) {
-      return;
-    }
+    console.log("Marker: adding marker portal.");
 
-    console.log("Marker: adding marker.");
-
-    let element: HTMLElement;
     if (children) {
-      element = document.createElement("div");
-      markerPortal.current = ReactDOM.createPortal(children, element);
+      markerElement.current = document.createElement("div");
+      markerPortal.current = ReactDOM.createPortal(
+        children,
+        markerElement.current
+      );
     }
 
-    const nextMarker = new MarkerGL({ ...options, element });
-    nextMarker.setLngLat(lnglat).addTo(mapGL);
-    setMarker(nextMarker);
+    setDomConfigured(true);
 
     return () => {
-      console.log(`Marker: removing marker`);
+      console.log(`Marker: removing marker portal.`);
       markerPortal.current = null;
-      setMarker(null);
-      nextMarker.remove();
+      markerElement.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return markerPortal.current;
+  useEffect(() => {
+    if (!popupElement.current || !marker) {
+      return;
+    }
+
+    let nextPopup: PopupGL;
+    if (popup) {
+      nextPopup = new PopupGL({ closeOnClick: true });
+      nextPopup.setDOMContent(popupElement.current);
+      marker.setPopup(nextPopup);
+    }
+
+    return () => {
+      marker.setPopup(null);
+      nextPopup = null;
+    };
+  }, [marker, popup]);
+
+  useEffect(() => {
+    if (!marker && !markerExists.current) {
+      return;
+    }
+
+    markerExists.current = true;
+
+    obj && obj(marker);
+  }, [marker, obj]);
+
+  return (
+    <>
+      {markerPortal.current}
+      {popup ? <Popup ref={popupElement}>{popup()}</Popup> : null}
+    </>
+  );
 }
 
-interface Props extends Omit<MarkerOptions, "element"> {
-  lnglat: LngLatLike;
-}
+interface Props extends HasPopup, MbxObj<MarkerGL>, Options {}

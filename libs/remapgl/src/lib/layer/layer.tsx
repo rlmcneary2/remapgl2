@@ -1,12 +1,5 @@
 import { useEffect, useRef } from "react";
-import {
-  AnyLayer,
-  EventData,
-  Layer as LayerGL,
-  MapLayerEventType,
-  MapLayerMouseEvent,
-  MapLayerTouchEvent
-} from "mapbox-gl";
+import { AnyLayer, Layer as LayerGL } from "mapbox-gl";
 import { LayerProps } from "../types";
 import { useContextValue } from "../context";
 import { useMapGL } from "../context/use-mapgl";

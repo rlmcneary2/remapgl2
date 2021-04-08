@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { MapGLOptions } from "./context/types";
+import { MapOptions } from "./context/types";
 import { Provider } from "./context/context-provider";
 import { Map } from "./map";
 
@@ -28,4 +28,4 @@ interface Props
         HTMLDivElement
       >
     >,
-    MapGLOptions {}
+    MapOptions {}

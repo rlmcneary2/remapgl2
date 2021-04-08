@@ -1,34 +1,87 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FeatureCollection, Geometry } from "geojson";
-import { CircleLayer, CirclePaint } from "mapbox-gl";
-import { Layer, RemapGL, Marker } from "@remapgl/remapgl";
+import { CircleLayer, CirclePaint, Marker as MarkerGL } from "mapbox-gl";
+import {
+  Layer,
+  RemapGL,
+  Marker,
+  NavigationControl,
+  GeolocateControl
+} from "@remapgl/remapgl";
+
+const mapOptions = {
+  center: { lng: -68.2954881, lat: 44.3420759 },
+  zoom: 9
+};
 
 export default function App() {
   const ref = useRef();
+
+  return (
+    <RemapGL
+      accessToken="pk.eyJ1IjoicmxtY25lYXJ5MiIsImEiOiJjajgyZjJuMDAyajJrMndzNmJqZDFucTIzIn0.BYE_k7mYhhVCdLckWeTg0g"
+      ref={ref}
+      {...mapOptions}
+    >
+      <GeolocateControl
+        obj={o => {
+          console.log(`App: o=${!!o}, trigger.`);
+          // o.trigger();
+        }}
+        on={{
+          geolocate: e => console.log("App: geolocate=%o", e),
+          error: e => console.log("App: error=%o", e)
+        }}
+        options={{
+          positionOptions: { enableHighAccuracy: true },
+          trackUserLocation: true
+        }}
+      />
+      <NavigationControl showCompass showZoom />
+      <DynamicMap />
+    </RemapGL>
+  );
+}
+
+function DynamicMap() {
   const [layers, setLayers] = useState(layerData);
+
+  const handleObj = useCallback(
+    (mrk: MarkerGL) =>
+      setTimeout(() => {
+        console.log("App: mrk=%o", mrk);
+        mrk.togglePopup();
+      }, 4000),
+    []
+  );
 
   useEffect(() => {
     setTimeout(() => setLayers(current => [...current.reverse()]), 3000);
   }, []);
 
   return (
-    <RemapGL
-      accessToken="pk.eyJ1IjoicmxtY25lYXJ5MiIsImEiOiJjajgyZjJuMDAyajJrMndzNmJqZDFucTIzIn0.BYE_k7mYhhVCdLckWeTg0g"
-      ref={ref}
-    >
+    <>
       {/* <Marker draggable={true} lnglat={{ lng: -68.2954881, lat: 44.3420759 }}>
         <MarkerElement />
       </Marker> */}
-      <Marker draggable={true} lnglat={{ lng: -68.2954881, lat: 44.3420759 }} />
-      {layers.map(({ id, ...props }) => (
-        <Layer
-          {...props}
-          id={id}
-          key={id}
-          on={[["mouseover", () => console.log(`${id} on mouseover`)]]}
-        />
-      ))}
-    </RemapGL>
+      <Marker
+        draggable={true}
+        lnglat={{ lng: -68.2954881, lat: 44.3420759 }}
+        obj={handleObj}
+        popup={() => <Popup />}
+      />
+      {layers.map(({ id, ...props }) => {
+        console.log(`App: layer id=${id}`);
+        return (
+          <Layer
+            {...props}
+            id={id}
+            key={id}
+            on={{ mouseover: () => console.log(`${id} on mouseover`) }}
+          />
+        );
+      })}
+    </>
   );
 }
 
@@ -46,6 +99,14 @@ function MarkerElement() {
       hello
     </section>
   );
+}
+
+function Popup() {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    setInterval(() => setCount(c => c + 1), 3000);
+  }, []);
+  return <>Popped! {count}</>;
 }
 
 const data: FeatureCollection<Geometry, { [name: string]: any }> = {
