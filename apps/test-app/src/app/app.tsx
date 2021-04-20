@@ -25,7 +25,6 @@ export default function App() {
     >
       <GeolocateControl
         obj={o => {
-          console.log(`App: o=${!!o}, trigger.`);
           // o.trigger();
         }}
         on={{
@@ -49,8 +48,7 @@ function DynamicMap() {
   const handleObj = useCallback(
     (mrk: MarkerGL) =>
       setTimeout(() => {
-        console.log("App: mrk=%o", mrk);
-        mrk.togglePopup();
+        // mrk.togglePopup();
       }, 4000),
     []
   );
@@ -71,7 +69,7 @@ function DynamicMap() {
         popup={() => <Popup />}
       />
       {layers.map(({ id, ...props }) => {
-        console.log(`App: layer id=${id}`);
+        // console.log(`App: layer id=${id}`);
         return (
           <Layer
             {...props}

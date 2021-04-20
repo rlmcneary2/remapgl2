@@ -8,13 +8,13 @@ export function useLayer(mapGL: MapGL, { id, on }: LayerProps) {
    */
   useEffect(() => {
     for (const [type, listener] of Object.entries(on)) {
-      console.log(`useLayer[${id}]: add '${type}' listener.`);
+      // console.log(`useLayer[${id}]: add '${type}' listener.`);
       mapGL.on(type as keyof MapLayerEventType, id, listener);
     }
 
     return () => {
       for (const [type, listener] of Object.entries(on)) {
-        console.log(`useLayer[${id}]: remove '${type}' listener.`);
+        // console.log(`useLayer[${id}]: remove '${type}' listener.`);
         mapGL.off(type as keyof MapLayerEventType, id, listener);
       }
     };

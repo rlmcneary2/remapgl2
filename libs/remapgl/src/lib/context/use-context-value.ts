@@ -11,8 +11,8 @@ export function useContextValue<T>(
   const [state, setState] = useState<T>();
 
   useEffect(() => {
+    const next = selector ? selector(context) : ((context as unknown) as T);
     setState(current => {
-      const next = selector ? selector(context) : state;
       if (deepCompare && _isEqual(current, next)) {
         return current;
       }
