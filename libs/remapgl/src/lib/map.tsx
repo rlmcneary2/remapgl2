@@ -6,7 +6,7 @@ import React, {
   useRef
 } from "react";
 import { MapOptions } from "./context/types";
-import { useContextValue, useMapGL } from "./context";
+import { useMapGL } from "./context";
 
 export const Map = React.forwardRef<
   HTMLDivElement,
@@ -18,14 +18,6 @@ function MapInternal(
   refArg: React.Ref<HTMLDivElement>
 ) {
   const ref = useRef<HTMLDivElement>();
-  const { layerOrder, setLayerOrder } =
-    useContextValue(
-      state => ({
-        layerOrder: state?.layerOrder,
-        setLayerOrder: state?.setLayerOrder
-      }),
-      true
-    ) ?? {};
   const { htmlProps, mapOptions } = useMemo(() => separateProps(props), [
     props
   ]);
@@ -41,30 +33,6 @@ function MapInternal(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready]);
 
-  // The order of layer IDs needs to be tracked since layers are actually
-  // rendered by the map in its canvas, if the layers have to be reordered
-  // based on the order of children the Map will need to do that.
-  useEffect(() => {
-    if (!setLayerOrder) {
-      return;
-    }
-
-    const nextLayerOrder: string[] = [];
-    React.Children.forEach(children, child => {
-      if (!isLayer(child)) {
-        return;
-      }
-
-      if (!child?.props?.id) {
-        throw Error("Layers does not have the required `id` prop.");
-      }
-
-      nextLayerOrder.push(child.props.id);
-    });
-
-    updateLayerIds(layerOrder, nextLayerOrder, setLayerOrder);
-  }, [children, layerOrder, setLayerOrder]);
-
   return (
     <div ref={ref} {...htmlProps}>
       {mapGL ? children : null}
@@ -72,32 +40,32 @@ function MapInternal(
   );
 }
 
-function isJSXElementConstructor<P = any>(
-  type: any
-): type is JSXElementConstructor<P> {
-  return type instanceof Function;
-}
+// function isJSXElementConstructor<P = any>(
+//   type: any
+// ): type is JSXElementConstructor<P> {
+//   return type instanceof Function;
+// }
 
-function isLayer(
-  child: any
-): child is React.ReactElement<any, string | React.JSXElementConstructor<any>> {
-  if (
-    !isReactElement(child) ||
-    !isJSXElementConstructor<{ id: string }>(child.type)
-  ) {
-    return false;
-  }
+// function isLayer(
+//   child: any
+// ): child is React.ReactElement<any, string | React.JSXElementConstructor<any>> {
+//   if (
+//     !isReactElement(child) ||
+//     !isJSXElementConstructor<{ id: string }>(child.type)
+//   ) {
+//     return false;
+//   }
 
-  const {
-    type: { name }
-  } = child;
+//   const {
+//     type: { name }
+//   } = child;
 
-  return name === "Layer";
-}
+//   return name === "Layer";
+// }
 
-function isReactElement(child: any): child is React.ReactElement {
-  return typeof child === "object" && child?.type instanceof Function;
-}
+// function isReactElement(child: any): child is React.ReactElement {
+//   return typeof child === "object" && child?.type instanceof Function;
+// }
 
 function separateProps(props: Props) {
   const {
@@ -222,29 +190,29 @@ function separateProps(props: Props) {
   return result;
 }
 
-function updateLayerIds(
-  layers: string[],
-  nextLayers: string[],
-  setLayerOrder: (layers: string[]) => void
-) {
-  if (!layers || layers.length !== nextLayers.length) {
-    console.log("updateLayerIds: no existing layers; setting layers.");
-    setLayerOrder(nextLayers ?? []);
-    return;
-  }
+// function updateLayerIds(
+//   layers: string[],
+//   nextLayers: string[],
+//   setLayerOrder: (layers: string[]) => void
+// ) {
+//   if (!layers || layers.length !== nextLayers.length) {
+//     console.log("updateLayerIds: no existing layers; setting layers.");
+//     setLayerOrder(nextLayers ?? []);
+//     return;
+//   }
 
-  if (layers.length < 1 && nextLayers.length < 1) {
-    return;
-  }
+//   if (layers.length < 1 && nextLayers.length < 1) {
+//     return;
+//   }
 
-  for (let i = 0; i < nextLayers.length; i++) {
-    if (layers[i] !== nextLayers[i]) {
-      console.log("updateLayerIds: layer order has changed; setting layers.");
-      setLayerOrder(nextLayers);
-      return;
-    }
-  }
-}
+//   for (let i = 0; i < nextLayers.length; i++) {
+//     if (layers[i] !== nextLayers[i]) {
+//       console.log("updateLayerIds: layer order has changed; setting layers.");
+//       setLayerOrder(nextLayers);
+//       return;
+//     }
+//   }
+// }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props

@@ -2,12 +2,15 @@ import { Map as MapGL, MapboxOptions as MapboxOptionsGL } from "mapbox-gl";
 import { AnyLayer, AnySourceData } from "mapbox-gl";
 
 export interface ContextActions {
+  getLayerIndex: (id: string) => number;
+  setLayer: (id: string, timestanp: number) => void;
   setLayerOrder: (layers: AnyLayer["id"][]) => void;
   setMapGL: (mapGL: MapGL) => void;
 }
 
 export interface ContextState {
-  layerOrder: AnyLayer["id"][];
+  layerOrder: { id: AnyLayer["id"]; timestamp: number }[];
+  // layerOrder: Record<string, { index?: number; timestamp: number | null }>;
   mapElem: React.MutableRefObject<HTMLDivElement>;
   mapGL: MapGL;
 }
