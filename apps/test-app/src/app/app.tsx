@@ -1,8 +1,14 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { FeatureCollection, Geometry } from "geojson";
 import { CircleLayer, CirclePaint, Marker as MarkerGL } from "mapbox-gl";
 import {
-  Layer,
+  LayerCollection,
   RemapGL,
   Marker,
   NavigationControl,
@@ -45,6 +51,13 @@ export default function App() {
 function DynamicMap() {
   const [layers, setLayers] = useState(layerData);
 
+  const eventLayers = useMemo(() => {
+    return layers.map(layer => ({
+      ...layer,
+      on: { mouseover: () => console.log(`${layer.id} on mouseover`) }
+    }));
+  }, [layers]);
+
   const handleObj = useCallback(
     (mrk: MarkerGL) =>
       setTimeout(() => {
@@ -68,17 +81,7 @@ function DynamicMap() {
         obj={handleObj}
         popup={() => <Popup />}
       />
-      {layers.map(({ id, ...props }) => {
-        // console.log(`App: layer id=${id}`);
-        return (
-          <Layer
-            {...props}
-            id={id}
-            key={id}
-            on={{ mouseover: () => console.log(`${id} on mouseover`) }}
-          />
-        );
-      })}
+      <LayerCollection layers={eventLayers} />
     </>
   );
 }
