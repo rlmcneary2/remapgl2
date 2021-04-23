@@ -1,4 +1,8 @@
-import { AnyLayer, MapLayerEventType, Popup as PopupGL } from "mapbox-gl";
+import {
+  AnyLayer as AnyLayerGL,
+  MapLayerEventType,
+  Popup as PopupGL
+} from "mapbox-gl";
 
 /**
  * Not all the events from Mapbox have the EventedEvent interface applied. This
@@ -10,7 +14,10 @@ export interface EventedEvent<Type, Target = unknown> {
   type: Type;
 }
 
-export type LayerProps = AnyLayer & OnEvents<MapLayerEventType>;
+/**
+ * A layer that supports events.
+ */
+export type AnyLayer = AnyLayerGL & OnEvents<MapLayerEventType>;
 
 /**
  * Provides the Mapbox object that backs the React component. This is similar to

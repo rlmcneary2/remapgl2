@@ -1,24 +1,20 @@
-import { useEffect, useRef } from "react";
-import { AnyLayer, Layer as LayerGL } from "mapbox-gl";
-import { LayerProps } from "../types";
+import { useEffect, useRef, useState } from "react";
+import { Layer as LayerGL, MapLayerEventType } from "mapbox-gl";
+import { AnyLayer } from "../types";
 import { useMapGL } from "../context/use-mapgl";
-import { useLayer } from "./use-layer";
-import { useLayerOrder } from "./use-layer-order";
 
-export function Layer(props: LayerProps) {
+export function Layer({ beforeId, ...props }: Props) {
+  const [lastBeforeId, setLastBeforeId] = useState(beforeId);
   const added = useRef(false);
-  // const index = useRef(null);
   const { mapGL } = useMapGL();
-  useLayer(mapGL, props);
-  useLayerOrder(props.id);
 
+  const { on } = props;
   const { id, paint, source, type } = props as LayerGL;
 
   useEffect(() => {
     console.log(`Layer[${id}]: mounted.`);
     return () => console.log(`Layer[${id}]: unmounted.`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   /**
    * Add the layer to the map.
@@ -38,5 +34,46 @@ export function Layer(props: LayerProps) {
     };
   }, [id, mapGL, paint, source, type]);
 
+  /**
+   * Connect `on` event listeners.
+   */
+  useEffect(() => {
+    if (!on) {
+      return;
+    }
+
+    for (const [type, listener] of Object.entries(on)) {
+      // console.log(`useLayer[${id}]: add '${type}' listener.`);
+      mapGL.on(type as keyof MapLayerEventType, id, listener);
+    }
+
+    return () => {
+      for (const [type, listener] of Object.entries(on)) {
+        // console.log(`useLayer[${id}]: remove '${type}' listener.`);
+        mapGL.off(type as keyof MapLayerEventType, id, listener);
+      }
+    };
+  }, [id, mapGL, on]);
+
+  /**
+   * Reorder the layer on the map.
+   */
+  useEffect(() => {
+    if (lastBeforeId === beforeId) {
+      return;
+    }
+
+    if (!beforeId) {
+      return;
+    }
+
+    mapGL.moveLayer(id, beforeId);
+    setLastBeforeId(beforeId);
+  }, [beforeId, id, lastBeforeId, mapGL]);
+
   return null;
 }
+
+type Props = AnyLayer & {
+  beforeId?: string;
+};
