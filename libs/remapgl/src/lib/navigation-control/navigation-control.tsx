@@ -2,14 +2,11 @@ import { useEffect, useRef } from "react";
 import { IControl, NavigationControl as NavigationControlGL } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
 
-export function NavigationControl({
-  showCompass,
-  showZoom,
-  visualizePitch
-}: Props) {
+export function NavigationControl(props: Props = {}) {
   const { mapGL } = useMapGL();
   const control = useRef<IControl>(null);
 
+  const { showCompass, showZoom, visualizePitch } = props;
   useEffect(() => {
     if (control.current) {
       return;

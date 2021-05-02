@@ -3,6 +3,11 @@ import { Layer as LayerGL, MapLayerEventType } from "mapbox-gl";
 import { AnyLayer } from "../types";
 import { useMapGL } from "../context/use-mapgl";
 
+/**
+ * Represents a layer that will be added to the map. No elements are created in
+ * the DOM by this component.
+ * @param props
+ */
 export function Layer({ beforeId, ...props }: Props) {
   const [lastBeforeId, setLastBeforeId] = useState(beforeId);
   const added = useRef(false);
@@ -29,7 +34,6 @@ export function Layer({ beforeId, ...props }: Props) {
     mapGL.addLayer(args as AnyLayer);
 
     return () => {
-      console.log(`Layer[${id}]: REMOVING layer '${id}'`);
       mapGL.removeLayer(id).removeSource(id);
     };
   }, [id, mapGL, paint, source, type]);
@@ -43,20 +47,18 @@ export function Layer({ beforeId, ...props }: Props) {
     }
 
     for (const [type, listener] of Object.entries(on)) {
-      // console.log(`useLayer[${id}]: add '${type}' listener.`);
       mapGL.on(type as keyof MapLayerEventType, id, listener);
     }
 
     return () => {
       for (const [type, listener] of Object.entries(on)) {
-        // console.log(`useLayer[${id}]: remove '${type}' listener.`);
         mapGL.off(type as keyof MapLayerEventType, id, listener);
       }
     };
   }, [id, mapGL, on]);
 
   /**
-   * Reorder the layer on the map.
+   * Reorder the layer on the map if it has changed.
    */
   useEffect(() => {
     if (lastBeforeId === beforeId) {
@@ -75,5 +77,7 @@ export function Layer({ beforeId, ...props }: Props) {
 }
 
 type Props = AnyLayer & {
+  /** If provided the map's layer order will be updated if necessary to put this
+   * layer before the referenced layer. */
   beforeId?: string;
 };

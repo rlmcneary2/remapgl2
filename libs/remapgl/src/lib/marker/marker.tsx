@@ -5,6 +5,10 @@ import { HasPopup, MbxObj } from "../types";
 import { Options, useMarker } from "./use-marker";
 import { Popup } from "../popup/popup";
 
+/**
+ * Displays a Marker component on the map.
+ * @param props
+ */
 export function Marker({
   children,
   obj,
@@ -21,8 +25,6 @@ export function Marker({
   const markerExists = useRef(false);
 
   useEffect(() => {
-    console.log("Marker: adding marker portal.");
-
     if (children) {
       markerElement.current = document.createElement("div");
       markerPortal.current = ReactDOM.createPortal(
@@ -34,7 +36,6 @@ export function Marker({
     setDomConfigured(true);
 
     return () => {
-      console.log(`Marker: removing marker portal.`);
       markerPortal.current = null;
       markerElement.current = null;
     };

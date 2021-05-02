@@ -44,6 +44,11 @@ export interface OnEvents<EventTypes> {
   };
 }
 
+/**
+ * Objects that can display a popup implement this interface. The popup
+ * component to be displayed can optionally be provided through the `popup`
+ * method.
+ */
 export interface HasPopup {
   popup?: () => React.ReactElement<PopupProps>;
 }

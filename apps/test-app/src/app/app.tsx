@@ -12,7 +12,9 @@ import {
   RemapGL,
   Marker,
   NavigationControl,
-  GeolocateControl
+  GeolocateControl,
+  AttributionControl,
+  ScaleControl
 } from "@remapgl/remapgl";
 
 const mapOptions = {
@@ -29,6 +31,7 @@ export default function App() {
       ref={ref}
       {...mapOptions}
     >
+      <AttributionControl customAttribution="FUBAR" />
       <GeolocateControl
         obj={o => {
           // o.trigger();
@@ -43,6 +46,7 @@ export default function App() {
         }}
       />
       <NavigationControl showCompass showZoom />
+      <ScaleControl unit="imperial" />
       <DynamicMap />
     </RemapGL>
   );

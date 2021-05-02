@@ -24,5 +24,7 @@ export function LayerCollection({ layers }: Props) {
 }
 
 interface Props {
+  /** Layers in the map. The order they appear in the map is determined by the
+   * order of elements in the array. */
   layers: AnyLayer[];
 }

@@ -71,7 +71,6 @@ function separateProps(props: Props) {
   const {
     accessToken,
     antialias,
-    attributionControl,
     bearing,
     bearingSnap,
     bounds,
@@ -80,7 +79,6 @@ function separateProps(props: Props) {
     clickTolerance,
     collectResourceTiming,
     crossSourceCollisions,
-    customAttribution,
     doubleClickZoom,
     dragPan,
     dragRotate,
@@ -119,7 +117,6 @@ function separateProps(props: Props) {
   let mapOptions: MapOptions = {
     accessToken,
     antialias,
-    attributionControl,
     bearing,
     bearingSnap,
     bounds,
@@ -128,7 +125,6 @@ function separateProps(props: Props) {
     clickTolerance,
     collectResourceTiming,
     crossSourceCollisions,
-    customAttribution,
     doubleClickZoom,
     dragPan,
     dragRotate,

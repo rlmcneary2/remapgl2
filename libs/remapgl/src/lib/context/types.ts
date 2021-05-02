@@ -22,7 +22,14 @@ export type Layer = AnyLayer & {
 };
 
 export interface MapOptions
-  extends Omit<MapboxOptionsGL, "accessToken" | "container" | "style"> {
+  extends Omit<
+    MapboxOptionsGL,
+    | "accessToken"
+    | "attributionControl"
+    | "container"
+    | "customAttribution"
+    | "style"
+  > {
   accessToken: string;
   cssFile?: string;
   mapStyle?: string;

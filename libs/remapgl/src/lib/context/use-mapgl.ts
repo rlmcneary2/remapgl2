@@ -80,7 +80,11 @@ async function createMap({
 }: Omit<MapOptions, "cssFile"> & { container: HTMLElement }) {
   mapboxgl.accessToken = mapboxgl.accessToken || accessToken;
 
-  const map = new MapGL({ ...options, style: mapStyle });
+  const map = new MapGL({
+    ...options,
+    attributionControl: false,
+    style: mapStyle
+  });
 
   // Wait for the map resources to be loaded. Attempting to manipulate the
   // map before these are complete will result in errors.
