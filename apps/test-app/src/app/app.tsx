@@ -14,7 +14,8 @@ import {
   NavigationControl,
   GeolocateControl,
   AttributionControl,
-  ScaleControl
+  ScaleControl,
+  FullscreenControl
 } from "@remapgl/remapgl";
 
 const mapOptions = {
@@ -32,6 +33,7 @@ export default function App() {
       {...mapOptions}
     >
       <AttributionControl customAttribution="FUBAR" />
+      <FullscreenControl />
       <GeolocateControl
         obj={o => {
           // o.trigger();

@@ -10,7 +10,6 @@ export interface ContextActions {
 
 export interface ContextState {
   layerOrder: { id: AnyLayer["id"]; timestamp: number }[];
-  // layerOrder: Record<string, { index?: number; timestamp: number | null }>;
   mapElem: React.MutableRefObject<HTMLDivElement>;
   mapGL: MapGL;
 }

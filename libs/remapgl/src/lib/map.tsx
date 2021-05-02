@@ -1,10 +1,4 @@
-import React, {
-  JSXElementConstructor,
-  MutableRefObject,
-  useEffect,
-  useMemo,
-  useRef
-} from "react";
+import React, { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { MapOptions } from "./context/types";
 import { useMapGL } from "./context";
 
