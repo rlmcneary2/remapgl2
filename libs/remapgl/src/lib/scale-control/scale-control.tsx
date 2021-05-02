@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Control, ScaleControl as ScaleControlGL } from "mapbox-gl";
+import { ScaleControl as ScaleControlGL } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
 
 /**

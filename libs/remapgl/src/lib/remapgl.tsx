@@ -1,8 +1,13 @@
 import React, { useRef } from "react";
+import { Map as MapGL } from "mapbox-gl";
+import { MbxObj } from "./types";
 import { MapOptions } from "./context/types";
 import { Provider } from "./context/context-provider";
 import { Map } from "./map";
 
+/**
+ * The root component. Add other remapgl components as children to control your map.
+ */
 export const RemapGL = React.forwardRef<HTMLDivElement, Props>(RemapGLInternal);
 
 function RemapGLInternal(
@@ -28,4 +33,5 @@ interface Props
         HTMLDivElement
       >
     >,
-    MapOptions {}
+    MapOptions,
+    MbxObj<MapGL> {}
