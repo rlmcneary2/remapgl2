@@ -64,7 +64,7 @@ function DynamicMap() {
     }));
   }, [layers]);
 
-  const handleObj = useCallback(
+  const handleMarkerObj = useCallback(
     (mrk: MarkerGL) =>
       setTimeout(() => {
         // mrk.togglePopup();
@@ -78,13 +78,17 @@ function DynamicMap() {
 
   return (
     <>
-      {/* <Marker draggable={true} lnglat={{ lng: -68.2954881, lat: 44.3420759 }}>
+      <Marker
+        draggable={true}
+        lnglat={{ lng: -68.3864896, lat: 44.3420759 }}
+        popup={() => <Popup />}
+      >
         <MarkerElement />
-      </Marker> */}
+      </Marker>
       <Marker
         draggable={true}
         lnglat={{ lng: -68.2954881, lat: 44.3420759 }}
-        obj={handleObj}
+        obj={handleMarkerObj}
         popup={() => <Popup />}
       />
       <LayerCollection layers={eventLayers} />
@@ -93,7 +97,6 @@ function DynamicMap() {
 }
 
 function MarkerElement() {
-  console.log("MarkerElement");
   return (
     <section
       style={{

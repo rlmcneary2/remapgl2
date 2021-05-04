@@ -2,9 +2,6 @@ import { Map as MapGL, MapboxOptions as MapboxOptionsGL } from "mapbox-gl";
 import { AnyLayer, AnySourceData } from "mapbox-gl";
 
 export interface ContextActions {
-  getLayerIndex: (id: string) => number;
-  setLayer: (id: string, timestanp: number) => void;
-  setLayerOrder: (layers: AnyLayer["id"][]) => void;
   setMapGL: (mapGL: MapGL) => void;
 }
 

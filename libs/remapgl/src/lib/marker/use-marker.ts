@@ -33,8 +33,6 @@ export function useMarker(
       return;
     }
 
-    console.log("useMarker: adding marker.");
-
     const nextOptions: MarkerOptionsGL = {
       ...options,
       draggable,
@@ -53,7 +51,6 @@ export function useMarker(
     setMarker(nextMarker);
 
     return () => {
-      console.log(`useMarker: removing marker`);
       setMarker(null);
       nextMarker.remove();
     };

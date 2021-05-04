@@ -8,7 +8,7 @@ export const Popup = React.forwardRef<
 
 function PopupInternal(
   { children }: React.PropsWithChildren<unknown>,
-  refArg: React.Ref<HTMLElement>
+  ref: React.Ref<HTMLElement>
 ) {
   const portal = useRef<React.ReactPortal>(null);
 
@@ -17,13 +17,13 @@ function PopupInternal(
       return;
     }
 
-    (refArg as MutableRefObject<HTMLElement>).current = document.createElement(
+    (ref as MutableRefObject<HTMLElement>).current = document.createElement(
       "div"
     );
 
     portal.current = ReactDOM.createPortal(
       children,
-      (refArg as MutableRefObject<HTMLElement>).current
+      (ref as MutableRefObject<HTMLElement>).current
     );
 
     return () => {
