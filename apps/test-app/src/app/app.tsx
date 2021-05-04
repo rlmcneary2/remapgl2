@@ -8,12 +8,12 @@ import React, {
 import { FeatureCollection, Geometry } from "geojson";
 import { CircleLayer, CirclePaint, Marker as MarkerGL } from "mapbox-gl";
 import {
+  AttributionControl,
+  GeolocateControl,
   LayerCollection,
-  RemapGL,
   Marker,
   NavigationControl,
-  GeolocateControl,
-  AttributionControl,
+  RemapGL,
   ScaleControl,
   FullscreenControl
 } from "@remapgl/remapgl";
@@ -116,7 +116,7 @@ function Popup() {
   return <>Popped! {count}</>;
 }
 
-const data: FeatureCollection<Geometry, { [name: string]: any }> = {
+const data: FeatureCollection<Geometry, Record<string, any>> = {
   features: [
     {
       geometry: {

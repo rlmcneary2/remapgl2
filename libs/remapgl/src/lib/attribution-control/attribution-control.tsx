@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AttributionControl as AttributionControlMbx } from "mapbox-gl";
+import { AttributionControl as AttributionControlGL } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
 
 /**
@@ -8,7 +8,7 @@ import { useMapGL } from "../context/use-mapgl";
  */
 export function AttributionControl(props: Options = {}) {
   const { mapGL } = useMapGL();
-  const [, setControl] = useState<AttributionControlMbx>(null);
+  const [, setControl] = useState<AttributionControlGL>(null);
 
   const { compact, customAttribution } = props;
   useEffect(() => {
@@ -18,7 +18,7 @@ export function AttributionControl(props: Options = {}) {
       opts.customAttribution = customAttribution;
     }
 
-    const nextControl = new AttributionControlMbx(opts);
+    const nextControl = new AttributionControlGL(opts);
 
     mapGL.addControl(nextControl);
     setControl(nextControl);
