@@ -1,6 +1,9 @@
 # remapgl
 
-React components to create mapbox-gl maps declaratively.
+Declarative Mapbox GL bindings <🌎>
+
+Quickly and easily create [Mapbox GL](https://docs.mapbox.com/mapbox-gl-js/api/)
+maps with [React](https://reactjs.org/) components.
 
 ## install
 
@@ -10,13 +13,13 @@ yarn install remapgl
 
 ## use
 
-Components accept most of the properties described in the Mapbox GL
-documentation as props.
+Components accept most of the properties described in the [Mapbox GL
+documentation](https://docs.mapbox.com/mapbox-gl-js/api/) as props.
 
 ### map
 
-The root component of the map is `RemapGL`, all other components must be children of
-`RemapGL`.
+The root component of a map is `RemapGL`, all other components must be children
+of `RemapGL`.
 
 ```tsx
 import { RemapGL } from "remapgl";
@@ -132,13 +135,32 @@ export function App() {
 
 ### imperative functions
 
-This library adopts the same convention as React does regarding HTML elements.
-Components that wrap a Mapbox GL control that exposes callable functions support
-the `MbxObj` interface. A callback function provided to such a component's `obj`
-prop will be invoked with a single argument that is the current instance of the
-Mapbox GL control.
+remapgl adopts a similar convention regarding Mapbox GL controls as React does
+for DOM objects. Components that wrap a Mapbox GL control, which exposes
+callable functions, support the `MbxObj` interface. A callback function provided
+to such a component's `obj` prop will be invoked with a single argument that is
+the current instance of the Mapbox GL control.
 
 The following components support the `MbxObj` interface:
 - RemapGL: returns `mapboxgl.Map`.
 - Marker: returns: `mapboxgl.Marker`.
 - GeolocateControl: returns `mapboxgl.GeoLocateControl`.
+
+In the following example the GeolocateControl returns the underlying Mapbox GL control
+which is used to trigger the request to start using geo-location.
+
+```tsx
+import { GeolocateControl, RemapGL } from "remapgl";
+
+export function App() {
+  return (
+    <RemapGL accessToken="your access token">
+      <GeolocateControl
+        obj={control => {
+          control.trigger();
+        }}
+      />
+    </RemapGL>
+  );
+}
+```

@@ -4,6 +4,7 @@
   "eslint.packageManager": "yarn",
   "editor.tabSize": 2,
   "cSpell.words": [
+    "Evented",
     "Fullscreen",
     "Geolocate",
     "buildable",
