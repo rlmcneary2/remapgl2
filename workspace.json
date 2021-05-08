@@ -1,7 +1,7 @@
 {
   "version": 2,
   "cli": { "defaultCollection": "@nrwl/react" },
-  "defaultProject": "test-app",
+  "defaultProject": "remapgl",
   "generators": {
     "@nrwl/react": {
       "application": { "style": "css", "linter": "eslint", "babel": true },
@@ -84,20 +84,50 @@
       "root": "libs/remapgl",
       "sourceRoot": "libs/remapgl/src",
       "projectType": "library",
-      "targets": {
+      "schematics": {},
+      "architect": {
         "lint": {
-          "executor": "@nrwl/linter:eslint",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/remapgl/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/remapgl/**/*.js",
+              "libs/remapgl/**/*.jsx",
+              "libs/remapgl/**/*.ts",
+              "libs/remapgl/**/*.tsx",
+              "libs/remapgl/**/*.spec.ts",
+              "libs/remapgl/**/*.spec.tsx",
+              "libs/remapgl/**/*.spec.js",
+              "libs/remapgl/**/*.spec.jsx",
+              "libs/remapgl/**/*.d.ts"
+            ]
           }
         },
+        "build": {
+          "builder": "@nrwl/web:package",
+          "options": {
+            "outputPath": "dist/libs/remapgl",
+            "tsConfig": "libs/remapgl/tsconfig.lib.json",
+            "project": "libs/remapgl/package.json",
+            "entryFile": "libs/remapgl/src/index.ts",
+            "external": ["react", "react-dom"],
+            "babelConfig": "@nrwl/react/plugins/bundle-babel",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          },
+          "outputs": [
+            "{options.outputPath}"
+          ]
+        },
         "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/remapgl"],
+          "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/remapgl/jest.config.js",
-            "passWithNoTests": true
-          }
+            "passWithNoTests": true,
+            "tsConfig": "libs/remapgl/tsconfig.spec.json"
+          },
+          "outputs": [
+            "coverage/libs/remapgl"
+          ]
         }
       }
     }
