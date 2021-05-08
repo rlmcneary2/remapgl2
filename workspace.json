@@ -120,6 +120,7 @@
         "build": {
           "executor": "@nrwl/web:package",
           "options": {
+            "assets": [{ "glob": "libs/remapgl/README.md", "input": ".", "output": "." }],
             "outputPath": "dist/libs/remapgl",
             "tsConfig": "libs/remapgl/tsconfig.lib.json",
             "project": "libs/remapgl/package.json",
