@@ -6,7 +6,7 @@ import { Provider } from "./context/context-provider";
 import { Map } from "./map";
 
 /**
- * The root component. Add other remapgl components as children to control your map.
+ * The root component; add other remapgl components as children to create a map.
  */
 export const RemapGL = React.forwardRef<HTMLDivElement, Props>(RemapGLInternal);
 

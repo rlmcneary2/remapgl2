@@ -2,5 +2,15 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.format.enable": true,
   "eslint.packageManager": "yarn",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "cSpell.words": [
+    "Fullscreen",
+    "Geolocate",
+    "buildable",
+    "lnglat",
+    "mapbox",
+    "mapboxgl",
+    "mapgl",
+    "remapgl"
+  ]
 }

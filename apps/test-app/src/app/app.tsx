@@ -19,6 +19,7 @@ import {
 } from "@remapgl/remapgl";
 
 const mapOptions = {
+  accessToken: window.location.hash.slice(1),
   center: { lng: -68.2954881, lat: 44.3420759 },
   zoom: 9
 };
@@ -27,12 +28,8 @@ export default function App() {
   const ref = useRef();
 
   return (
-    <RemapGL
-      accessToken="pk.eyJ1IjoicmxtY25lYXJ5MiIsImEiOiJjajgyZjJuMDAyajJrMndzNmJqZDFucTIzIn0.BYE_k7mYhhVCdLckWeTg0g"
-      ref={ref}
-      {...mapOptions}
-    >
-      <AttributionControl customAttribution="FUBAR" />
+    <RemapGL ref={ref} {...mapOptions}>
+      <AttributionControl />
       <FullscreenControl />
       <GeolocateControl
         obj={o => {
