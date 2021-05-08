@@ -1,4 +1,9 @@
 {
+  "author": { "name": "Richard L. McNeary II" },
+  "bugs": "https://github.com/rlmcneary2/remapgl2/issues",
+  "description": "Declarative Mapbox GL bindings <🌎>",
+  "homepage": "https://github.com/rlmcneary2/remapgl2/",
+  "keywords": ["map","mapbox", "mapboxgl", "react"],
   "name": "remapgl",
   "version": "2.0.0",
   "license": "MIT",
