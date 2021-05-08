@@ -1,12 +1,23 @@
 {
   "version": 2,
-  "cli": { "defaultCollection": "@nrwl/react" },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
   "defaultProject": "remapgl",
   "generators": {
     "@nrwl/react": {
-      "application": { "style": "css", "linter": "eslint", "babel": true },
-      "component": { "style": "css" },
-      "library": { "style": "css", "linter": "eslint" }
+      "application": {
+        "style": "css",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
     }
   },
   "projects": {
@@ -59,9 +70,13 @@
         },
         "serve": {
           "executor": "@nrwl/web:dev-server",
-          "options": { "buildTarget": "test-app:build" },
+          "options": {
+            "buildTarget": "test-app:build"
+          },
           "configurations": {
-            "production": { "buildTarget": "test-app:build:production" }
+            "production": {
+              "buildTarget": "test-app:build:production"
+            }
           }
         },
         "lint": {
@@ -84,10 +99,10 @@
       "root": "libs/remapgl",
       "sourceRoot": "libs/remapgl/src",
       "projectType": "library",
-      "schematics": {},
-      "architect": {
+      "generators": {},
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "libs/remapgl/**/*.js",
@@ -103,31 +118,26 @@
           }
         },
         "build": {
-          "builder": "@nrwl/web:package",
+          "executor": "@nrwl/web:package",
           "options": {
             "outputPath": "dist/libs/remapgl",
             "tsConfig": "libs/remapgl/tsconfig.lib.json",
             "project": "libs/remapgl/package.json",
             "entryFile": "libs/remapgl/src/index.ts",
-            "external": ["react", "react-dom"],
             "babelConfig": "@nrwl/react/plugins/bundle-babel",
             "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
             "buildableProjectDepsInPackageJsonType": "dependencies"
           },
-          "outputs": [
-            "{options.outputPath}"
-          ]
+          "outputs": ["{options.outputPath}"]
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/remapgl/jest.config.js",
             "passWithNoTests": true,
             "tsConfig": "libs/remapgl/tsconfig.spec.json"
           },
-          "outputs": [
-            "coverage/libs/remapgl"
-          ]
+          "outputs": ["coverage/libs/remapgl"]
         }
       }
     }
