@@ -6,3 +6,4 @@ export * from "./lib/remapgl";
 export * from "./lib/attribution-control/attribution-control";
 export * from "./lib/scale-control/scale-control";
 export * from "./lib/fullscreen-control/fullscreen-container";
+export * from "./lib/types";

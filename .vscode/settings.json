@@ -13,6 +13,7 @@
     "mapbox",
     "mapboxgl",
     "mapgl",
-    "remapgl"
+    "remapgl",
+    "styledata"
   ]
 }

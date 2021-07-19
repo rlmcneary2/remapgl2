@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Layer as LayerGL, MapLayerEventType } from "mapbox-gl";
+import mapboxgl, { Layer as LayerGL, MapLayerEventType } from "mapbox-gl";
 import { AnyLayer } from "../types";
 import { useMapGL } from "../context/use-mapgl";
 
@@ -8,7 +8,12 @@ import { useMapGL } from "../context/use-mapgl";
  * the DOM by this component.
  * @param props
  */
-export function Layer({ beforeId, ...props }: Props) {
+export function Layer({
+  addedLayers,
+  beforeId,
+  onLayerChanged,
+  ...props
+}: Props) {
   const [lastBeforeId, setLastBeforeId] = useState(beforeId);
   const added = useRef(false);
   const { mapGL } = useMapGL();
@@ -32,11 +37,13 @@ export function Layer({ beforeId, ...props }: Props) {
     added.current = true;
     const args = { id, paint, source, type };
     mapGL.addLayer(args as AnyLayer);
+    onLayerChanged(id, "added");
 
     return () => {
       mapGL.removeLayer(id).removeSource(id);
+      onLayerChanged(id, "removed");
     };
-  }, [id, mapGL, paint, source, type]);
+  }, [id, mapGL, onLayerChanged, paint, source, type]);
 
   /**
    * Connect `on` event listeners.
@@ -69,15 +76,29 @@ export function Layer({ beforeId, ...props }: Props) {
       return;
     }
 
+    // If the layer associated with `beforeId` hasn't been added to the mapGL
+    // yet don't try to move the current layer.
+    if (!addedLayers?.includes(beforeId)) {
+      return;
+    }
+
     mapGL.moveLayer(id, beforeId);
     setLastBeforeId(beforeId);
-  }, [beforeId, id, lastBeforeId, mapGL]);
+  }, [addedLayers, beforeId, id, lastBeforeId, mapGL]);
 
   return null;
 }
 
-type Props = AnyLayer & {
+export type Props = AnyLayer & {
+  /** Layers that have been added to the mapboxgl Map instance. */
+  addedLayers: string[];
   /** If provided the map's layer order will be updated if necessary to put this
    * layer before the referenced layer. */
   beforeId?: string;
+  onLayerChanged: (
+    /** The ID of the layer that changed. */ id: string,
+    /** Was the layer added to or removed from the Map? */ status:
+      | "added"
+      | "removed"
+  ) => void;
 };
