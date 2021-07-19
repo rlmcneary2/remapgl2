@@ -1,11 +1,8 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import mapboxgl, { Map as MapGL } from "mapbox-gl";
 import { MapOptions } from "./types";
+import { DEFAULT_MAPBOXGL_CSS, DEFAULT_MAPBOX_STYLE } from "../constants";
 import { Context } from "./context";
-
-const DEFAULT_MAPBOXGL_CSS =
-  "//api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css";
-const DEFAULT_MAPBOX_STYLE = "mapbox://styles/mapbox/outdoors-v11";
 
 export function useMapGL(options?: MapOptions) {
   const { mapGL, setMapGL } = useContext(Context);
@@ -89,25 +86,11 @@ async function createMap({
   // Wait for the map resources to be loaded. Attempting to manipulate the
   // map before these are complete will result in errors.
   await Promise.all([
-    new Promise<void>(resolve => {
-      function handleLoad() {
-        map.off("load", handleLoad);
-        resolve();
-      }
-
-      map.on("load", handleLoad);
-    }),
-    new Promise<void>(resolve => {
-      function handleStyleData() {
-        map.off("styledata", handleStyleData);
-        resolve();
-      }
-
-      map.on("styledata", handleStyleData);
-    })
+    new Promise<void>(resolve => map.once("load", () => resolve())),
+    new Promise<void>(resolve => map.once("styledata", () => resolve()))
   ]);
 
-  console.log("createMap: map resources loaded.");
+  console.log("useMapGL createMap: map resources loaded.");
 
   return map;
 }
