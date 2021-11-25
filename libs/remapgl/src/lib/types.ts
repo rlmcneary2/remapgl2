@@ -1,8 +1,4 @@
-import {
-  AnyLayer as AnyLayerGL,
-  MapLayerEventType,
-  Popup as PopupGL
-} from "mapbox-gl";
+import { AnyLayer as AnyLayerGL, MapLayerEventType } from "mapbox-gl";
 
 /**
  * Not all the events from Mapbox have the EventedEvent interface applied. This
@@ -50,8 +46,5 @@ export interface OnEvents<EventTypes> {
  * method.
  */
 export interface HasPopup {
-  popup?: () => React.ReactElement<PopupProps>;
+  popup?: () => React.ReactElement;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface PopupProps extends PopupGL {}
