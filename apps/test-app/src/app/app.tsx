@@ -6,7 +6,12 @@ import React, {
   useState
 } from "react";
 import { FeatureCollection, Geometry } from "geojson";
-import { CircleLayer, CirclePaint, Marker as MarkerGL } from "mapbox-gl";
+import {
+  CircleLayer,
+  CirclePaint,
+  Marker as MarkerGL,
+  Popup as PopupGL
+} from "mapbox-gl";
 import {
   AttributionControl,
   GeolocateControl,
@@ -78,7 +83,8 @@ function DynamicMap() {
       <Marker
         draggable={true}
         lnglat={{ lng: -68.3864896, lat: 44.3420759 }}
-        popup={() => <Popup />}
+        popup={popupGL => <Popup popupGL={popupGL} />}
+        popupOptions={{ closeButton: false, closeOnClick: true }}
       >
         <MarkerElement />
       </Marker>
@@ -86,7 +92,7 @@ function DynamicMap() {
         draggable={true}
         lnglat={{ lng: -68.2954881, lat: 44.3420759 }}
         obj={handleMarkerObj}
-        popup={() => <Popup />}
+        popup={popupGL => <Popup popupGL={popupGL} />}
       />
       <LayerCollection layers={eventLayers} />
     </>
@@ -108,12 +114,20 @@ function MarkerElement() {
   );
 }
 
-function Popup() {
+function Popup({ popupGL }: { popupGL: PopupGL }) {
   const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    popupGL.on("dragstart", () => console.log("POPUP DRAGSTART"));
+  }, [popupGL]);
+
   useEffect(() => {
     setInterval(() => setCount(c => c + 1), 3000);
   }, []);
-  return <>Popped! {count}</>;
+
+  console.log(popupGL);
+
+  return <span>Popped! {count}</span>;
 }
 
 const data: FeatureCollection<Geometry, Record<string, any>> = {
