@@ -1,4 +1,10 @@
-import { AnyLayer as AnyLayerGL, MapLayerEventType } from "mapbox-gl";
+import {
+  AnyLayer as AnyLayerGL,
+  MapLayerEventType,
+  Popup as PopupGL,
+  PopupOptions as PopupOptionsGL
+} from "mapbox-gl";
+import React from "react";
 
 /**
  * Not all the events from Mapbox have the EventedEvent interface applied. This
@@ -46,5 +52,8 @@ export interface OnEvents<EventTypes> {
  * method.
  */
 export interface HasPopup {
-  popup?: () => React.ReactElement;
+  popup?: (
+    popupGL: PopupGL
+  ) => React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+  popupOptions?: PopupOptionsGL;
 }

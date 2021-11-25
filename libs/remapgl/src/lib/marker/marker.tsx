@@ -13,11 +13,13 @@ export function Marker({
   children,
   obj,
   popup,
+  popupOptions,
   ...options
 }: React.PropsWithChildren<Props>) {
   children && React.Children.only(children);
 
-  const [, setDomConfigured] = useState(false);
+  const [, setForceRender] = useState(0);
+  const [popupGL, setPopupGL] = useState<PopupGL>(null);
   const markerPortal = useRef<React.ReactPortal>(null);
   const markerElement = useRef<HTMLElement>(null);
   const popupElement = useRef<HTMLElement>(null);
@@ -33,7 +35,7 @@ export function Marker({
       );
     }
 
-    setDomConfigured(true);
+    setForceRender(current => current + 1);
 
     return () => {
       markerPortal.current = null;
@@ -47,18 +49,20 @@ export function Marker({
       return;
     }
 
-    let nextPopup: PopupGL;
-    if (popup) {
-      nextPopup = new PopupGL({ closeOnClick: true });
-      nextPopup.setDOMContent(popupElement.current);
-      marker.setPopup(nextPopup);
+    if (!popup) {
+      return;
     }
+
+    const nextPopup = new PopupGL(popupOptions);
+    nextPopup.setDOMContent(popupElement.current);
+    marker.setPopup(nextPopup);
+    setPopupGL(nextPopup);
 
     return () => {
       marker.setPopup(null);
-      nextPopup = null;
+      setPopupGL(null);
     };
-  }, [marker, popup]);
+  }, [marker, popup, popupOptions]);
 
   useEffect(() => {
     if (!marker && !markerExists.current) {
@@ -73,7 +77,9 @@ export function Marker({
   return (
     <>
       {markerPortal.current}
-      {popup ? <Popup ref={popupElement}>{popup()}</Popup> : null}
+      {popup ? (
+        <Popup ref={popupElement}>{popupGL ? popup(popupGL) : null}</Popup>
+      ) : null}
     </>
   );
 }
