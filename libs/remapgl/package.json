@@ -12,7 +12,7 @@
     "react"
   ],
   "name": "remapgl",
-  "version": "2.1.1",
+  "version": "2.3.0",
   "license": "MIT",
   "peerDependencies": {
     "react": "^17.0.1",

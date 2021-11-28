@@ -42,7 +42,9 @@ export interface MbxObj<T> {
  */
 export interface OnEvents<EventTypes> {
   on?: {
-    [Property in keyof EventTypes]+?: (evt: EventTypes[Property]) => void;
+    [Property in keyof EventTypes]+?:
+      | ((evt: EventTypes[Property]) => void)
+      | ((evt: EventTypes[Property]) => any);
   };
 }
 

@@ -91,8 +91,8 @@ function DynamicMap() {
       <Marker
         draggable={true}
         lnglat={{ lng: -68.2954881, lat: 44.3420759 }}
-        obj={handleMarkerObj}
-        popup={popupGL => <Popup popupGL={popupGL} />}
+        on={{ click: evt => console.log(evt) }}
+        // popup={popupGL => <Popup popupGL={popupGL} />}
       />
       <LayerCollection layers={eventLayers} />
     </>
