@@ -6,7 +6,7 @@ import {
   MarkerOptions as MarkerOptionsGL
 } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
-import { OnEvents } from "@remapgl/remapgl";
+import { OnEvents } from "../types";
 
 /**
  * Work with a mapbox-gl marker.
