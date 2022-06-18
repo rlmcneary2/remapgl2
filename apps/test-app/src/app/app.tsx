@@ -10,9 +10,12 @@ import {
   CircleLayer,
   CirclePaint,
   Marker as MarkerGL,
-  Popup as PopupGL
+  Popup as PopupGL,
+  SymbolLayer,
+  SymbolPaint
 } from "mapbox-gl";
 import {
+  AnyLayer,
   AttributionControl,
   GeolocateControl,
   LayerCollection,
@@ -20,7 +23,8 @@ import {
   NavigationControl,
   RemapGL,
   ScaleControl,
-  FullscreenControl
+  FullscreenControl,
+  SymbolIconLayer
 } from "@remapgl/remapgl";
 
 const mapOptions = {
@@ -59,11 +63,20 @@ export default function App() {
 function DynamicMap() {
   const [layers, setLayers] = useState(layerData);
 
-  const eventLayers = useMemo(() => {
-    return layers.map(layer => ({
-      ...layer,
-      on: { mouseover: () => console.log(`${layer.id} on mouseover`) }
-    }));
+  const eventLayers = useMemo<AnyLayer[]>(() => {
+    return layers.map(layer => {
+      const anyLayer: AnyLayer = {
+        ...layer,
+        on: { mouseover: () => console.log(`${layer.id} on mouseover`) }
+      };
+
+      if (layer.type === "symbol" && layer.layout) {
+        (anyLayer as SymbolIconLayer).iconImageUrl = "assets/trh.png";
+        anyLayer.layout = layer.layout;
+      }
+
+      return anyLayer;
+    });
   }, [layers]);
 
   const handleMarkerObj = useCallback(
@@ -236,17 +249,29 @@ const paint: CirclePaint = {
   }
 };
 
-const layerData: CircleLayer[] = [
+// const layerData: CircleLayer[] = [
+//   {
+//     id: "black",
+//     paint,
+//     source: { data, type: "geojson" },
+//     type: "circle"
+//   },
+//   {
+//     id: "red",
+//     paint: { ...paint, "circle-color": "#F22" },
+//     source: { data, type: "geojson" },
+//     type: "circle"
+//   }
+// ];
+
+const symPaint: SymbolPaint = {};
+
+const layerData: SymbolLayer[] = [
   {
-    id: "black",
-    paint,
+    id: "sym-black",
+    layout: { "icon-image": "trh", "icon-size": 0.5 },
+    paint: symPaint,
     source: { data, type: "geojson" },
-    type: "circle"
-  },
-  {
-    id: "red",
-    paint: { ...paint, "circle-color": "#F22" },
-    source: { data, type: "geojson" },
-    type: "circle"
+    type: "symbol"
   }
 ];
