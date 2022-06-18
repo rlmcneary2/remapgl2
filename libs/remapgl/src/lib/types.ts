@@ -1,8 +1,10 @@
 import {
   AnyLayer as AnyLayerGL,
+  Map as MapGL,
   MapLayerEventType,
   Popup as PopupGL,
-  PopupOptions as PopupOptionsGL
+  PopupOptions as PopupOptionsGL,
+  SymbolLayer
 } from "mapbox-gl";
 import React from "react";
 
@@ -46,6 +48,11 @@ export interface OnEvents<EventTypes> {
       | ((evt: EventTypes[Property]) => void)
       | ((evt: EventTypes[Property]) => any);
   };
+}
+
+export interface SymbolIconLayer extends SymbolLayer {
+  iconImageUrl: string;
+  imageOptions?: Parameters<MapGL["addImage"]>[2];
 }
 
 /**

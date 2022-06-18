@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import mapboxgl, { Layer as LayerGL, MapLayerEventType } from "mapbox-gl";
-import { AnyLayer } from "../types";
+import mapboxgl, {
+  Layer as LayerGL,
+  MapLayerEventType,
+  SymbolLayer
+} from "mapbox-gl";
+import { AnyLayer, SymbolIconLayer } from "../types";
 import { useMapGL } from "../context/use-mapgl";
 
 /**
@@ -15,11 +19,13 @@ export function Layer({
   ...props
 }: Props) {
   const [lastBeforeId, setLastBeforeId] = useState(beforeId);
-  const added = useRef(false);
+  const added = useRef<"pending" | "active" | "complete">("pending");
   const { mapGL } = useMapGL();
 
   const { on } = props;
-  const { id, paint, source, type } = props as LayerGL;
+  const { id, layout, paint, source, type } = props as LayerGL;
+  const iconImage = (props as SymbolIconLayer).layout?.["icon-image"];
+  const { iconImageUrl, imageOptions } = props as SymbolIconLayer;
 
   useEffect(() => {
     console.log(`Layer[${id}]: mounted.`);
@@ -30,20 +36,47 @@ export function Layer({
    * Add the layer to the map.
    */
   useEffect(() => {
-    if (added.current) {
+    if (added.current !== "pending") {
       return;
     }
 
-    added.current = true;
-    const args = { id, paint, source, type };
-    mapGL.addLayer(args as AnyLayer);
-    onLayerChanged(id, "added");
+    added.current = "active";
+
+    (async () => {
+      if (iconImage && iconImageUrl) {
+        await loadSymbolImage(mapGL, iconImageUrl, iconImage, imageOptions);
+      }
+
+      const args: LayerGL = { id, paint, source, type };
+      if (layout) {
+        args.layout = layout;
+      }
+
+      mapGL.addLayer(args as AnyLayer);
+      added.current = "complete";
+      onLayerChanged(id, "added");
+    })();
 
     return () => {
-      mapGL.removeLayer(id).removeSource(id);
+      if (added.current === "complete") {
+        mapGL.removeLayer(id).removeSource(id);
+      }
+
+      added.current = "pending";
       onLayerChanged(id, "removed");
     };
-  }, [id, mapGL, onLayerChanged, paint, source, type]);
+  }, [
+    iconImage,
+    iconImageUrl,
+    id,
+    imageOptions,
+    layout,
+    mapGL,
+    onLayerChanged,
+    paint,
+    source,
+    type
+  ]);
 
   /**
    * Connect `on` event listeners.
@@ -86,7 +119,55 @@ export function Layer({
     setLastBeforeId(beforeId);
   }, [addedLayers, beforeId, id, lastBeforeId, mapGL]);
 
+  const { visibility } = layout ?? {};
+
+  /**
+   * Update layer visibility.
+   */
+  useEffect(() => {
+    if (!mapGL || added.current !== "complete") {
+      return;
+    }
+
+    mapGL.setLayoutProperty(id, "visibility", visibility ?? "visible");
+  }, [id, mapGL, visibility]);
+
   return null;
+}
+
+function loadSymbolImage(
+  mapGL: mapboxgl.Map,
+  iconImageUrl: string,
+  iconImage: SymbolLayer["layout"]["icon-image"],
+  imageOptions?: SymbolIconLayer["imageOptions"]
+) {
+  return new Promise<void>(resolve => {
+    if (typeof iconImage !== "string") {
+      console.warn(
+        `The icon-image is not a string. The image at '${iconImageUrl}' will no tbe loaded.`
+      );
+      resolve();
+      return;
+    }
+
+    if (mapGL.hasImage(iconImage)) {
+      resolve();
+      return;
+    }
+
+    mapGL.loadImage(iconImageUrl, (err, image) => {
+      if (!err) {
+        const args: Parameters<mapboxgl.Map["addImage"]> = [iconImage, image];
+
+        if (imageOptions) {
+          args.push(imageOptions);
+        }
+
+        mapGL.addImage(...args);
+        resolve();
+      }
+    });
+  });
 }
 
 export type Props = AnyLayer & {

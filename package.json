@@ -51,7 +51,7 @@
     "@testing-library/react": "11.1.2",
     "@types/jest": "26.0.8",
     "@types/lodash": "^4.14.168",
-    "@types/mapbox-gl": "^2.1.0",
+    "@types/mapbox-gl": "2.1.1",
     "@types/node": "12.12.38",
     "@types/react": "16.9.56",
     "@types/react-dom": "16.9.9",
