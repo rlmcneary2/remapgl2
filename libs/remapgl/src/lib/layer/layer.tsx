@@ -144,7 +144,7 @@ function loadSymbolImage(
   return new Promise<void>(resolve => {
     if (typeof iconImage !== "string") {
       console.warn(
-        `The icon-image is not a string. The image at '${iconImageUrl}' will no tbe loaded.`
+        `The icon-image is not a string. The image at '${iconImageUrl}' will not be loaded.`
       );
       resolve();
       return;
@@ -157,15 +157,20 @@ function loadSymbolImage(
 
     mapGL.loadImage(iconImageUrl, (err, image) => {
       if (!err) {
-        const args: Parameters<mapboxgl.Map["addImage"]> = [iconImage, image];
+        // Check for the image again because there could be two near-parallel
+        // requests to load the same image file.
+        if (!mapGL.hasImage(iconImage)) {
+          const args: Parameters<mapboxgl.Map["addImage"]> = [iconImage, image];
 
-        if (imageOptions) {
-          args.push(imageOptions);
+          if (imageOptions) {
+            args.push(imageOptions);
+          }
+
+          mapGL.addImage(...args);
         }
-
-        mapGL.addImage(...args);
-        resolve();
       }
+
+      resolve();
     });
   });
 }
