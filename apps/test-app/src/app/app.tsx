@@ -9,6 +9,7 @@ import { FeatureCollection, Geometry } from "geojson";
 import {
   CircleLayer,
   CirclePaint,
+  LngLatLike,
   Marker as MarkerGL,
   Popup as PopupGL,
   SymbolLayer,
@@ -22,9 +23,11 @@ import {
   Marker,
   NavigationControl,
   RemapGL,
+  MapPopup,
   ScaleControl,
   FullscreenControl,
-  SymbolIconLayer
+  SymbolIconLayer,
+  useMapGL
 } from "@remapgl/remapgl";
 
 const mapOptions = {
@@ -61,13 +64,18 @@ export default function App() {
 }
 
 function DynamicMap() {
+  const { mapGL } = useMapGL();
   const [layers, setLayers] = useState(layerData);
+  const [popupLocation, setPopupLocation] = useState<LngLatLike>(null);
 
   const eventLayers = useMemo<AnyLayer[]>(() => {
     return layers.map(layer => {
       const anyLayer: AnyLayer = {
         ...layer,
-        on: { mouseover: () => console.log(`${layer.id} on mouseover`) }
+        on: {
+          click: evt => setPopupLocation(evt.lngLat),
+          mouseover: () => console.log(`${layer.id} on mouseover`)
+        }
       };
 
       if (layer.type === "symbol" && layer.layout) {
@@ -93,14 +101,14 @@ function DynamicMap() {
 
   return (
     <>
-      <Marker
+      {/* <Marker
         draggable={true}
         lnglat={{ lng: -68.3864896, lat: 44.3420759 }}
         popup={popupGL => <Popup popupGL={popupGL} />}
         popupOptions={{ closeButton: false, closeOnClick: true }}
       >
         <MarkerElement />
-      </Marker>
+      </Marker> */}
       <Marker
         draggable={true}
         lnglat={{ lng: -68.2954881, lat: 44.3420759 }}
@@ -108,6 +116,14 @@ function DynamicMap() {
         // popup={popupGL => <Popup popupGL={popupGL} />}
       />
       <LayerCollection layers={eventLayers} />
+      {popupLocation ? (
+        <MapPopup
+          lngLat={popupLocation}
+          options={{ closeButton: false, closeOnClick: true }}
+        >
+          <div>POPPED</div>
+        </MapPopup>
+      ) : null}
     </>
   );
 }
