@@ -119,6 +119,7 @@ function DynamicMap() {
       {popupLocation ? (
         <MapPopup
           lngLat={popupLocation}
+          onClose={() => console.log("MapPopup closed.")}
           options={{ closeButton: false, closeOnClick: true }}
         >
           <div>POPPED</div>
