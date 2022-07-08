@@ -4,6 +4,7 @@ import {
   Popup as PopupGL,
   PopupOptions as PopupOptionsGL
 } from "mapbox-gl";
+import { MbxObj } from "../types";
 import { useMapGL } from "../context";
 import { Popup } from "./popup";
 
@@ -14,9 +15,10 @@ import { Popup } from "./popup";
 export function MapPopup({
   children,
   lngLat,
+  obj,
   onClose,
   options
-}: React.PropsWithChildren<Props>) {
+}: React.PropsWithChildren<MapPopupProps>) {
   const ref = useRef(null);
   const popup = useRef<PopupGL>(null);
   const { mapGL } = useMapGL();
@@ -35,11 +37,13 @@ export function MapPopup({
 
     popup.current = nextPopup;
 
+    obj && obj(nextPopup);
+
     return () => {
       nextPopup.remove();
       popup.current = null;
     };
-  }, [lngLat, mapGL, onClose, options]);
+  }, [lngLat, mapGL, obj, onClose, options]);
 
   useEffect(() => {
     if (!popup.current) {
@@ -52,7 +56,7 @@ export function MapPopup({
   return <Popup ref={ref}>{children}</Popup>;
 }
 
-interface Props {
+export interface MapPopupProps extends MbxObj<PopupGL> {
   /** The location of the popup on the map. */
   lngLat: LngLatLike;
   /** Invoked when the popup is closed. */
