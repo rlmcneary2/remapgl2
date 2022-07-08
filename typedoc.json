@@ -1,0 +1,8 @@
+{
+  "entryPoints": "libs/remapgl/src/index.ts",
+  "includeVersion": true,
+  "githubPages": true,
+  "gitRevision": "main",
+  "out": "docs",
+  "tsconfig": "libs/remapgl/tsconfig.lib.json"
+}
