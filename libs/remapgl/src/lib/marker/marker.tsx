@@ -20,7 +20,6 @@ export function Marker({
 
   const [, setForceRender] = useState(0);
   const [popupGL, setPopupGL] = useState<PopupGL>(null);
-  const markerPortal = useRef<React.ReactPortal>(null);
   const markerElement = useRef<HTMLElement>(null);
   const popupElement = useRef<HTMLElement>(null);
   const marker = useMarker(options, !children ? false : markerElement.current);
@@ -29,16 +28,11 @@ export function Marker({
   useEffect(() => {
     if (children) {
       markerElement.current = document.createElement("div");
-      markerPortal.current = ReactDOM.createPortal(
-        children,
-        markerElement.current
-      );
     }
 
     setForceRender(current => current + 1);
 
     return () => {
-      markerPortal.current = null;
       markerElement.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,9 +68,13 @@ export function Marker({
     obj && obj(marker);
   }, [marker, obj]);
 
+  if (!markerElement.current) {
+    return null;
+  }
+
   return (
     <>
-      {markerPortal.current}
+      {ReactDOM.createPortal(children, markerElement.current)}
       {popup ? (
         <Popup ref={popupElement}>{popupGL ? popup(popupGL) : null}</Popup>
       ) : null}
