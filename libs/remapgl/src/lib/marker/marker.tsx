@@ -1,3 +1,4 @@
+import { isEqual as _isEqual } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { Marker as MarkerGL, Popup as PopupGL } from "mapbox-gl";
@@ -20,10 +21,29 @@ export function Marker({
 
   const [, setForceRender] = useState(0);
   const [popupGL, setPopupGL] = useState<PopupGL>(null);
+  const [safePopupOptions, setSafePopupOptions] = useState<
+    HasPopup["popupOptions"]
+  >(null);
   const markerElement = useRef<HTMLElement>(null);
-  const popupElement = useRef<HTMLElement>(null);
+  const [popupElement, setPopupElement] = useState<HTMLElement>(null);
   const marker = useMarker(options, !children ? false : markerElement.current);
   const markerExists = useRef(false);
+
+  useEffect(() => {
+    // When passing in popupOptions
+    //
+    // - AND the popup is displayed
+    // - IF the popupOptions object changes
+    // - BUT the property values are the same
+    //
+    //  the popup will be closed, and it will not reappear. This behavior
+    //  doesn't really match how one expects a React component to work so do a
+    //  deep compare of the options object and if the property values are the
+    //  same ignore the new object and the popup will not close.
+    setSafePopupOptions(current =>
+      _isEqual(current, popupOptions) ? current : popupOptions
+    );
+  }, [popupOptions]);
 
   useEffect(() => {
     if (children) {
@@ -39,7 +59,7 @@ export function Marker({
   }, []);
 
   useEffect(() => {
-    if (!popupElement.current || !marker) {
+    if (!popupElement || !marker) {
       return;
     }
 
@@ -47,8 +67,8 @@ export function Marker({
       return;
     }
 
-    const nextPopup = new PopupGL(popupOptions);
-    nextPopup.setDOMContent(popupElement.current);
+    const nextPopup = new PopupGL(safePopupOptions);
+    nextPopup.setDOMContent(popupElement);
     marker.setPopup(nextPopup);
     setPopupGL(nextPopup);
 
@@ -56,7 +76,7 @@ export function Marker({
       marker.setPopup(null);
       setPopupGL(null);
     };
-  }, [marker, popup, popupOptions]);
+  }, [marker, popup, popupElement, safePopupOptions]);
 
   useEffect(() => {
     if (!marker && !markerExists.current) {
@@ -76,7 +96,7 @@ export function Marker({
     <>
       {ReactDOM.createPortal(children, markerElement.current)}
       {popup ? (
-        <Popup ref={popupElement}>{popupGL ? popup(popupGL) : null}</Popup>
+        <Popup ref={setPopupElement}>{popupGL ? popup(popupGL) : null}</Popup>
       ) : null}
     </>
   );
