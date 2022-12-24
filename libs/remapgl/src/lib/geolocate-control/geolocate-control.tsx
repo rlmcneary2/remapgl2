@@ -6,7 +6,11 @@ import {
 import { EventedEvent, MbxObj, OnEvents } from "../types";
 import { useMapGL } from "../context/use-mapgl";
 
-export function GeolocateControl({ obj, options, on }: Props) {
+/**
+ * Create a control that allows the user to zoom the map to their current
+ * location.
+ */
+export function GeolocateControl({ obj, options, on }: GeolocateControlProps) {
   const [control, setControl] = useState<GeoLocateControlGL>();
   const { mapGL } = useMapGL();
 
@@ -19,8 +23,6 @@ export function GeolocateControl({ obj, options, on }: Props) {
   } = options ?? {};
 
   useEffect(() => {
-    console.log("GeolocateControl: create.");
-
     const sourceOptions = {
       positionOptions,
       fitBoundsOptions,
@@ -50,7 +52,6 @@ export function GeolocateControl({ obj, options, on }: Props) {
     setControl(nextControl);
 
     return () => {
-      console.log("GeolocateControl: destroy.");
       if (on) {
         for (const [type, listener] of Object.entries(on)) {
           nextControl.off(type, listener);
@@ -80,7 +81,7 @@ export function GeolocateControl({ obj, options, on }: Props) {
   return null;
 }
 
-type GeolocateEventTypes = {
+export type GeolocateEventTypes = {
   error: EventedEvent<"error", GeoLocateControlGL> & GeolocationPositionError;
   geolocate: EventedEvent<"geolocate", GeoLocateControlGL> &
     GeolocationPosition;
@@ -98,7 +99,11 @@ type GeolocateEventTypes = {
     GeolocationPosition;
 };
 
-interface Props
+/**
+ * Implemented by an object that allows the user to focus the map on their
+ * current location.
+ */
+export interface GeolocateControlProps
   extends MbxObj<GeoLocateControlGL>,
     OnEvents<GeolocateEventTypes> {
   options?: {

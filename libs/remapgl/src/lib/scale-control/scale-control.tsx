@@ -6,14 +6,12 @@ import { useMapGL } from "../context/use-mapgl";
  * Scale control displayed on the map.
  * @param props
  */
-export function ScaleControl(props: Options = {}) {
+export function ScaleControl({ maxWidth, unit }: ScaleControlProps) {
   const [control, setControl] = useState<ScaleControlGL>(null);
   const { mapGL } = useMapGL();
 
-  const { maxWidth, unit } = props;
-
   useEffect(() => {
-    let opts: Options;
+    let opts: ScaleControlProps;
     if (maxWidth) {
       opts = opts ?? {};
       opts.maxWidth = maxWidth;
@@ -41,7 +39,7 @@ export function ScaleControl(props: Options = {}) {
   return null;
 }
 
-interface Options {
+export interface ScaleControlProps {
   maxWidth?: number;
   unit?: "imperial" | "metric" | "nautical";
 }
