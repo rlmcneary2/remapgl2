@@ -6,14 +6,9 @@ import { useMapGL } from "./context";
 
 export const Map = React.forwardRef<
   HTMLDivElement,
-  React.PropsWithChildren<Props>
->(MapInternal);
-
-function MapInternal(
-  { children, obj, ...props }: Props,
-  refArg: React.Ref<HTMLDivElement>
-) {
-  const ref = useRef<HTMLDivElement>();
+  React.PropsWithChildren<MapProps>
+>(function MapImpl({ children, obj, ...props }, ref) {
+  const containerRef = useRef<HTMLDivElement>();
   const { htmlProps, mapOptions } = useMemo(
     () => separateProps(props),
     [props]
@@ -27,19 +22,19 @@ function MapInternal(
       return;
     }
 
-    (refArg as MutableRefObject<HTMLElement>).current = ref.current;
-    setMapContainer(ref.current);
+    (ref as MutableRefObject<HTMLElement>).current = containerRef.current;
+    setMapContainer(containerRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready]);
 
   return (
-    <div ref={ref} {...htmlProps}>
+    <div ref={containerRef} {...htmlProps}>
       {mapGL ? children : null}
     </div>
   );
-}
+});
 
-function separateProps(props: Props) {
+function separateProps(props: MapProps) {
   const {
     accessToken,
     antialias,
@@ -158,13 +153,9 @@ function separateProps(props: Props) {
   return result;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Props
-  extends Partial<
-      React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-      >
-    >,
-    MapOptions,
-    MbxObj<MapGL> {}
+export type MapProps = React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> &
+  MapOptions &
+  MbxObj<MapGL>;

@@ -13,8 +13,16 @@ import React from "react";
  * interface can be extended so that the event argument in the listener has the
  * correct properties.
  */
-export interface EventedEvent<Type, Target = unknown> {
+export interface EventedEvent<Type extends string, Target = unknown> {
+  /**
+   * The event's target that raised the event for example `GeoLocateControl`.
+   * @see https://docs.mapbox.com/mapbox-gl-js/api/events/#evented
+   */
   target: Target;
+  /**
+   * The event name; for example "geolocate".
+   * @see https://docs.mapbox.com/mapbox-gl-js/api/events/#evented
+   */
   type: Type;
 }
 

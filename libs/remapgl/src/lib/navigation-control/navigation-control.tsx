@@ -2,11 +2,17 @@ import { useEffect, useRef } from "react";
 import { IControl, NavigationControl as NavigationControlGL } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
 
-export function NavigationControl(props: Props = {}) {
+/**
+ * Allow the user to manipulate the appearance of the map.
+ */
+export function NavigationControl({
+  showCompass,
+  showZoom,
+  visualizePitch
+}: NavigationControlProps) {
   const { mapGL } = useMapGL();
   const control = useRef<IControl>(null);
 
-  const { showCompass, showZoom, visualizePitch } = props;
   useEffect(() => {
     if (control.current) {
       return;
@@ -29,7 +35,7 @@ export function NavigationControl(props: Props = {}) {
   return null;
 }
 
-interface Props {
+export interface NavigationControlProps {
   showCompass?: boolean;
   showZoom?: boolean;
   visualizePitch?: boolean;

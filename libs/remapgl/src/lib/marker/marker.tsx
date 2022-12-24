@@ -3,12 +3,12 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { Marker as MarkerGL, Popup as PopupGL } from "mapbox-gl";
 import { HasPopup, MbxObj } from "../types";
-import { Options, useMarker } from "./use-marker";
+import type { MarkerOptions } from "./use-marker";
+import { useMarker } from "./use-marker";
 import { Popup } from "../popup/popup";
 
 /**
  * Displays a Marker component on the map.
- * @param props
  */
 export function Marker({
   children,
@@ -16,7 +16,7 @@ export function Marker({
   popup,
   popupOptions,
   ...options
-}: React.PropsWithChildren<Props>) {
+}: React.PropsWithChildren<MarkerProps>) {
   children && React.Children.only(children);
 
   const [, setForceRender] = useState(0);
@@ -102,4 +102,4 @@ export function Marker({
   );
 }
 
-interface Props extends HasPopup, MbxObj<MarkerGL>, Options {}
+export type MarkerProps = HasPopup & MbxObj<MarkerGL> & MarkerOptions;
