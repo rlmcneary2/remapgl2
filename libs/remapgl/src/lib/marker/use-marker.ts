@@ -25,7 +25,7 @@ export function useMarker(
     rotation,
     rotationAlignment,
     ...options
-  }: Options,
+  }: MarkerOptions,
   element: HTMLElement | false = false
 ) {
   const [marker, setMarker] = useState<MarkerGL>(null);
@@ -122,7 +122,7 @@ type MarkerEventType = {
   dragend: MapboxEvent<MouseEvent | TouchEvent | undefined>;
 };
 
-export interface Options
+export interface MarkerOptions
   extends Omit<MarkerOptionsGL, "element">,
     OnEvents<MarkerEventType> {
   lnglat: LngLatLike;

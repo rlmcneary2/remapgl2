@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from "react";
 import { AnyLayer } from "../types";
-import { Layer, Props as LayerProps } from "../layer/layer";
+import { Layer, LayerProps } from "../layer/layer";
 
 /**
  * The layers to be displayed on the map. Having more than one layer collection
  * is not recommended as the layers in each collection will be treated
  * independently in terms of layer order.
  */
-export function LayerCollection({ layers }: Props) {
+export function LayerCollection({ layers }: LayerCollectionProps) {
   /** Layers that have actually been added to the mapboxgl Map instance. */
   const [addedLayers, setAddedLayers] = useState<string[]>([]);
 
@@ -51,7 +51,7 @@ export function LayerCollection({ layers }: Props) {
   );
 }
 
-interface Props {
+export interface LayerCollectionProps {
   /** Layers in the map. The order they appear in the map is determined by the
    * order of elements in the array. */
   layers: AnyLayer[];

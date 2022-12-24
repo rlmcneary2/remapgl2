@@ -8,16 +8,15 @@ import { AnyLayer, SymbolIconLayer } from "../types";
 import { useMapGL } from "../context/use-mapgl";
 
 /**
- * Represents a layer that will be added to the map. No elements are created in
- * the DOM by this component.
- * @param props
+ * Represents a layer that will be added to the map.
+ * @description No elements are created in the DOM by this component.
  */
 export function Layer({
   addedLayers,
   beforeId,
   onLayerChanged,
   ...props
-}: Props) {
+}: LayerProps) {
   const [lastBeforeId, setLastBeforeId] = useState(beforeId);
   const added = useRef<"pending" | "active" | "complete">("pending");
   const { mapGL } = useMapGL();
@@ -175,7 +174,7 @@ function loadSymbolImage(
   });
 }
 
-export type Props = AnyLayer & {
+export type LayerProps = AnyLayer & {
   /** Layers that have been added to the mapboxgl Map instance. */
   addedLayers: string[];
   /** If provided the map's layer order will be updated if necessary to put this

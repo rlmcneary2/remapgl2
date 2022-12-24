@@ -1,3 +1,5 @@
+import type { MapOptions } from "./lib/context/types";
+import type { MarkerOptions } from "./lib/marker/use-marker";
 import { useMapGL as useMapGLInternal } from "./lib/context";
 
 export * from "./lib/geolocate-control/geolocate-control";
@@ -12,11 +14,11 @@ export * from "./lib/fullscreen-control/fullscreen-container";
 export * from "./lib/types";
 
 /**
- * Provides access the Mapbox Map instance.
+ * Provides access to the Mapbox Map instance.
  */
 const useMapGL: () => Pick<
   ReturnType<typeof useMapGLInternal>,
   "mapGL" | "ready"
 > = useMapGLInternal;
 
-export { useMapGL };
+export { MapOptions, MarkerOptions, useMapGL };
