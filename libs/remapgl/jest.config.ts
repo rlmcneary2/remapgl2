@@ -4,8 +4,8 @@ export default {
   preset: "../../jest.preset.js",
   transform: {
     "^.+\\.[tj]sx?$": [
-      "babel-jest",
-      { cwd: __dirname, configFile: "./babel-jest.config.json" }
+      "@swc/jest",
+      { jsc: { transform: { react: { runtime: "automatic" } } } }
     ]
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
