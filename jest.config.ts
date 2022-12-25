@@ -1,3 +1,3 @@
-const { getJestProjects } = require("@nrwl/jest");
-
-export default { projects: getJestProjects() };
+export default {
+  projects: ["<rootDir>/apps/test-app", "<rootDir>/libs/remapgl"]
+};
