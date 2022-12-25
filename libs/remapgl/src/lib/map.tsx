@@ -14,9 +14,10 @@ function MapInternal(
   refArg: React.Ref<HTMLDivElement>
 ) {
   const ref = useRef<HTMLDivElement>();
-  const { htmlProps, mapOptions } = useMemo(() => separateProps(props), [
-    props
-  ]);
+  const { htmlProps, mapOptions } = useMemo(
+    () => separateProps(props),
+    [props]
+  );
   const { ready, mapGL, setMapContainer } = useMapGL(mapOptions);
 
   obj && mapGL && obj(mapGL);
