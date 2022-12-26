@@ -7,8 +7,8 @@ export interface ContextActions {
 
 export interface ContextState {
   layerOrder: { id: AnyLayer["id"]; timestamp: number }[];
-  mapElem: React.MutableRefObject<HTMLDivElement>;
-  mapGL: MapGL;
+  mapElem?: React.MutableRefObject<HTMLDivElement>;
+  mapGL?: MapGL;
 }
 
 export type ContextValue = ContextActions & ContextState;
