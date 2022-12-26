@@ -21,7 +21,7 @@ export const RemapGL = React.forwardRef<HTMLDivElement, RemapGLProps>(
       </Provider>
     );
   }
-) as RemapGLGlobal;
+);
 
 Object.defineProperties(RemapGL, {
   defaultMapboxGLCss: { enumerable: true, value: DEFAULT_MAPBOXGL_CSS },
@@ -38,7 +38,7 @@ export type RemapGLProps = React.DetailedHTMLProps<
   MapOptions &
   MbxObj<MapGL>;
 
-interface RemapGLGlobal
+export interface RemapGLGlobal
   extends React.ForwardRefExoticComponent<
     React.PropsWithoutRef<RemapGLProps> & React.RefAttributes<HTMLDivElement>
   > {
