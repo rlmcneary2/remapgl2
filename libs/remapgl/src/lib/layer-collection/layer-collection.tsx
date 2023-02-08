@@ -16,10 +16,14 @@ export function LayerCollection({ layers }: LayerCollectionProps) {
   const handleLayerChanged = useCallback<LayerProps["onLayerChanged"]>(
     (id, status) => {
       if (status === "added") {
-        setAddedLayers(
-          current =>
-            current.includes(id) ? current : current.splice(-1, 0, id) // Dumb bundler bug that can't map the spread operator...
-        );
+        setAddedLayers(current => {
+          let result = current;
+          if (!current.includes(id)) {
+            result = [...current, id];
+          }
+
+          return result;
+        });
       } else if (status === "removed") {
         setAddedLayers(current =>
           !current.includes(id) ? current : current.filter(x => x !== id)
