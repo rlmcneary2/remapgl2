@@ -26,11 +26,6 @@ export function Layer({
   const iconImage = (props as SymbolIconLayer).layout?.["icon-image"];
   const { iconImageUrl, imageOptions } = props as SymbolIconLayer;
 
-  useEffect(() => {
-    console.log(`Layer[${id}]: mounted.`);
-    return () => console.log(`Layer[${id}]: unmounted.`);
-  }, [id]);
-
   /**
    * Add the layer to the map.
    */
