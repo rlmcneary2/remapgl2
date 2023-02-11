@@ -174,7 +174,12 @@ function loadSymbolImage(
   });
 }
 
-export type LayerProps = AnyLayer & {
+/**
+ * Props that support rendering layers in a map.
+ */
+export type LayerProps = AnyLayerProps | AnyLayerSymbolProps;
+
+interface LayerBaseProps {
   /** Layers that have been added to the mapboxgl Map instance. */
   addedLayers: string[];
   /** If provided the map's layer order will be updated if necessary to put this
@@ -186,4 +191,7 @@ export type LayerProps = AnyLayer & {
       | "added"
       | "removed"
   ) => void;
-};
+}
+
+type AnyLayerProps = LayerBaseProps & AnyLayer;
+type AnyLayerSymbolProps = AnyLayerProps & SymbolIconLayer;
