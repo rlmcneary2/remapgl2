@@ -1,26 +1,15 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { Map as MapGL } from "mapbox-gl";
-import { SymbolIconLayer } from "../types";
 import { useMapGL } from "../context/use-mapgl";
 import type { LayerProps } from "./layer";
 import { Layer } from "./layer";
+import { createMockMapGL } from "../test";
 
-const mockMapGL: Partial<MapGL> = {
-  addLayer: jest.fn(),
-  addImage: jest.fn(),
-  hasImage: jest.fn(),
-  loadImage: jest.fn(),
-  moveLayer: jest.fn(),
-  off: jest.fn(),
-  on: jest.fn(),
-  removeLayer: jest.fn(),
-  removeSource: jest.fn(),
-  setLayoutProperty: jest.fn()
-};
+const mockMapGL = createMockMapGL();
 
 jest.mock("../context/use-mapgl", () => {
   const hook: typeof useMapGL = () => ({
-    mapGL: mockMapGL as MapGL,
+    mapGL: mockMapGL,
     ready: true,
     setMapContainer: jest.fn()
   });
