@@ -69,8 +69,15 @@ export interface SymbolIconLayer extends SymbolLayer {
  * method.
  */
 export interface HasPopup {
-  popup?: (
-    popupGL: PopupGL
-  ) => React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+  /**
+   * An optional render function that returns a React component to be displayed
+   * as the content of MapboxGL controls that can have a custom popup.
+   * @param popupGL The MapboxGL Popup control associated with the owning
+   * MapboxGL control.
+   */
+  popup?: (popupGL: PopupGL) => React.ReactNode;
+  /**
+   * Options that are passed to the constructor of MapboxGL Popup control.
+   */
   popupOptions?: PopupOptionsGL;
 }

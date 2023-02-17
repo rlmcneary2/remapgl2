@@ -1,37 +1,27 @@
-import React, { MutableRefObject, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
 export const Popup = React.forwardRef<
   HTMLElement,
   React.PropsWithChildren<unknown>
->(PopupInternal);
+>(function PopupImpl({ children }, ref) {
+  const [element, setElement] = useState<HTMLElement>(null);
 
-function PopupInternal(
-  { children }: React.PropsWithChildren<unknown>,
-  ref: React.Ref<HTMLElement> | React.MutableRefObject<HTMLElement>
-) {
-  const portalElement = useRef<HTMLElement>(null);
-
-  // Only release the element when the component is being unmounted.
-  useEffect(() => () => (portalElement.current = null), []);
-
-  // Only create an element for the portal once then provide it to the parent -
-  // will not create a new element even if the parent provides a different ref
-  // object.
   useEffect(() => {
-    if (portalElement.current) {
-      return;
-    }
+    const el = document.createElement("div");
+    setElement(el);
+    return () => setElement(null);
+  }, []);
 
-    portalElement.current = document.createElement("div");
+  useEffect(() => {
     if (typeof ref === "function") {
-      ref(portalElement.current);
+      ref(element);
     } else {
-      (ref as MutableRefObject<HTMLElement>).current = portalElement.current;
+      ref.current = element;
     }
-  }, [ref]);
+  }, [element, ref]);
 
-  return portalElement.current
-    ? ReactDOM.createPortal(children, portalElement.current)
+  return element
+    ? (ReactDOM.createPortal(children, element) as React.ReactElement)
     : null;
-}
+});

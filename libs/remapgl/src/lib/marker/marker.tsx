@@ -1,5 +1,4 @@
-import { isEqual as _isEqual } from "lodash";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { Marker as MarkerGL, Popup as PopupGL } from "mapbox-gl";
 import { HasPopup, MbxObj } from "../types";
@@ -17,33 +16,28 @@ export function Marker({
   popupOptions,
   ...options
 }: React.PropsWithChildren<MarkerProps>) {
-  children && React.Children.only(children);
+  children && (typeof children === "string" || React.Children.only(children));
 
   const [, setForceRender] = useState(0);
   const [popupGL, setPopupGL] = useState<PopupGL>(null);
-  const [safePopupOptions, setSafePopupOptions] = useState<
-    HasPopup["popupOptions"]
-  >(null);
-  const markerElement = useRef<HTMLElement>(null);
   const [popupElement, setPopupElement] = useState<HTMLElement>(null);
+  const markerElement = useRef<HTMLElement>(null);
   const marker = useMarker(options, !children ? false : markerElement.current);
   const markerExists = useRef(false);
 
-  useEffect(() => {
-    // When passing in popupOptions
-    //
-    // - AND the popup is displayed
-    // - IF the popupOptions object changes
-    // - BUT the property values are the same
-    //
-    //  the popup will be closed, and it will not reappear. This behavior
-    //  doesn't really match how one expects a React component to work so do a
-    //  deep compare of the options object and if the property values are the
-    //  same ignore the new object and the popup will not close.
-    setSafePopupOptions(current =>
-      _isEqual(current, popupOptions) ? current : popupOptions
-    );
-  }, [popupOptions]);
+  const handlePopupRef = useCallback((ref: HTMLElement) => {
+    setPopupElement(ref);
+  }, []);
+
+  /*
+   * Free resources when the component unmounts.
+   */
+  useEffect(
+    () => () => {
+      setPopupElement(null);
+    },
+    []
+  );
 
   useEffect(() => {
     if (children) {
@@ -67,7 +61,7 @@ export function Marker({
       return;
     }
 
-    const nextPopup = new PopupGL(safePopupOptions);
+    const nextPopup = new PopupGL(popupOptions);
     nextPopup.setDOMContent(popupElement);
     marker.setPopup(nextPopup);
     setPopupGL(nextPopup);
@@ -76,7 +70,7 @@ export function Marker({
       marker.setPopup(null);
       setPopupGL(null);
     };
-  }, [marker, popup, popupElement, safePopupOptions]);
+  }, [marker, popup, popupElement, popupOptions]);
 
   useEffect(() => {
     if (!marker && !markerExists.current) {
@@ -92,11 +86,13 @@ export function Marker({
     return null;
   }
 
+  const portal = ReactDOM.createPortal(children, markerElement.current);
+
   return (
     <>
-      {ReactDOM.createPortal(children, markerElement.current)}
+      {portal}
       {popup ? (
-        <Popup ref={setPopupElement}>{popupGL ? popup(popupGL) : null}</Popup>
+        <Popup ref={handlePopupRef}>{popupGL ? popup(popupGL) : null}</Popup>
       ) : null}
     </>
   );
