@@ -1,25 +1,5 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
-  "defaultProject": "remapgl",
-  "generators": {
-    "@nrwl/react": {
-      "application": {
-        "style": "css",
-        "linter": "eslint",
-        "babel": true
-      },
-      "component": {
-        "style": "css"
-      },
-      "library": {
-        "style": "css",
-        "linter": "eslint"
-      }
-    }
-  },
   "projects": {
     "remapgl": {
       "root": "libs/remapgl",
@@ -45,7 +25,7 @@
           "outputs": ["{options.outputFile}"]
         },
         "build": {
-          "executor": "@nrwl/web:package",
+          "executor": "@nrwl/web:rollup",
           "options": {
             "assets": [
               {
@@ -73,7 +53,8 @@
           },
           "outputs": ["coverage/libs/remapgl"]
         }
-      }
+      },
+      "tags": []
     },
     "test-app": {
       "root": "apps/test-app",
@@ -81,7 +62,7 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/web:build",
+          "executor": "@nrwl/web:webpack",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/test-app",
@@ -148,7 +129,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     }
   }
 }
