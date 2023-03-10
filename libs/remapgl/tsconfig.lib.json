@@ -10,6 +10,7 @@
   ],
   "exclude": [
     "jest-setup.ts",
+    "src/lib/test/*.ts",
     "src/**/__mock__/**/*tsx",
     "**/*.spec.ts",
     "**/*.test.ts",
