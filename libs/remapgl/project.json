@@ -32,13 +32,15 @@
             "output": "."
           }
         ],
-        "outputPath": "dist/libs/remapgl",
-        "tsConfig": "libs/remapgl/tsconfig.lib.json",
-        "project": "libs/remapgl/package.json",
-        "entryFile": "libs/remapgl/src/index.ts",
         "babelConfig": "@nrwl/react/plugins/bundle-babel",
-        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
-        "buildableProjectDepsInPackageJsonType": "dependencies"
+        "buildableProjectDepsInPackageJsonType": "peerDependencies",
+        "entryFile": "libs/remapgl/src/index.ts",
+        "format": ["esm"],
+        "outputPath": "dist/libs/remapgl",
+        "project": "libs/remapgl/package.json",
+        "rollupConfig": ["@nrwl/react/plugins/bundle-rollup", "libs/remapgl/rollup.config.js"],
+        "tsConfig": "libs/remapgl/tsconfig.lib.json",
+        "updateBuildableProjectDepsInPackageJson": true
       },
       "outputs": ["{options.outputPath}"]
     },
