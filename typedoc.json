@@ -1,5 +1,5 @@
 {
-  "entryPoints": "libs/remapgl/src/index.ts",
+  "entryPoints": ["libs/remapgl/src/index.ts"],
   "includeVersion": true,
   "githubPages": true,
   "gitRevision": "main",
