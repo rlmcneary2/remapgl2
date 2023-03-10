@@ -47,7 +47,7 @@
         "test": {
           "executor": "@nrwl/jest:jest",
           "options": {
-            "jestConfig": "libs/remapgl/jest.config.js",
+            "jestConfig": "libs/remapgl/jest.config.ts",
             "passWithNoTests": true,
             "tsConfig": "libs/remapgl/tsconfig.spec.json"
           },
@@ -62,7 +62,7 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/web:webpack",
+          "executor": "@nrwl/webpack:webpack",
           "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/test-app",
@@ -104,7 +104,7 @@
           }
         },
         "serve": {
-          "executor": "@nrwl/web:dev-server",
+          "executor": "@nrwl/webpack:dev-server",
           "options": {
             "buildTarget": "test-app:build"
           },
@@ -125,12 +125,13 @@
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/test-app"],
           "options": {
-            "jestConfig": "apps/test-app/jest.config.js",
+            "jestConfig": "apps/test-app/jest.config.ts",
             "passWithNoTests": true
           }
         }
       },
       "tags": []
     }
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
