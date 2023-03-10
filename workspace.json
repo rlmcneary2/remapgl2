@@ -21,6 +21,60 @@
     }
   },
   "projects": {
+    "remapgl": {
+      "root": "libs/remapgl",
+      "sourceRoot": "libs/remapgl/src",
+      "projectType": "library",
+      "generators": {},
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/remapgl/**/*.js",
+              "libs/remapgl/**/*.jsx",
+              "libs/remapgl/**/*.ts",
+              "libs/remapgl/**/*.tsx",
+              "libs/remapgl/**/*.spec.ts",
+              "libs/remapgl/**/*.spec.tsx",
+              "libs/remapgl/**/*.spec.js",
+              "libs/remapgl/**/*.spec.jsx",
+              "libs/remapgl/**/*.d.ts"
+            ]
+          },
+          "outputs": ["{options.outputFile}"]
+        },
+        "build": {
+          "executor": "@nrwl/web:package",
+          "options": {
+            "assets": [
+              {
+                "glob": "libs/remapgl/README.md",
+                "input": ".",
+                "output": "."
+              }
+            ],
+            "outputPath": "dist/libs/remapgl",
+            "tsConfig": "libs/remapgl/tsconfig.lib.json",
+            "project": "libs/remapgl/package.json",
+            "entryFile": "libs/remapgl/src/index.ts",
+            "babelConfig": "@nrwl/react/plugins/bundle-babel",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "buildableProjectDepsInPackageJsonType": "dependencies"
+          },
+          "outputs": ["{options.outputPath}"]
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/remapgl/jest.config.js",
+            "passWithNoTests": true,
+            "tsConfig": "libs/remapgl/tsconfig.spec.json"
+          },
+          "outputs": ["coverage/libs/remapgl"]
+        }
+      }
+    },
     "test-app": {
       "root": "apps/test-app",
       "sourceRoot": "apps/test-app/src",
@@ -83,7 +137,8 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/test-app/**/*.{ts,tsx,js,jsx}"]
-          }
+          },
+          "outputs": ["{options.outputFile}"]
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -92,53 +147,6 @@
             "jestConfig": "apps/test-app/jest.config.js",
             "passWithNoTests": true
           }
-        }
-      }
-    },
-    "remapgl": {
-      "root": "libs/remapgl",
-      "sourceRoot": "libs/remapgl/src",
-      "projectType": "library",
-      "generators": {},
-      "targets": {
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/remapgl/**/*.js",
-              "libs/remapgl/**/*.jsx",
-              "libs/remapgl/**/*.ts",
-              "libs/remapgl/**/*.tsx",
-              "libs/remapgl/**/*.spec.ts",
-              "libs/remapgl/**/*.spec.tsx",
-              "libs/remapgl/**/*.spec.js",
-              "libs/remapgl/**/*.spec.jsx",
-              "libs/remapgl/**/*.d.ts"
-            ]
-          }
-        },
-        "build": {
-          "executor": "@nrwl/web:package",
-          "options": {
-            "assets": [{ "glob": "libs/remapgl/README.md", "input": ".", "output": "." }],
-            "outputPath": "dist/libs/remapgl",
-            "tsConfig": "libs/remapgl/tsconfig.lib.json",
-            "project": "libs/remapgl/package.json",
-            "entryFile": "libs/remapgl/src/index.ts",
-            "babelConfig": "@nrwl/react/plugins/bundle-babel",
-            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
-            "buildableProjectDepsInPackageJsonType": "dependencies"
-          },
-          "outputs": ["{options.outputPath}"]
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/remapgl/jest.config.js",
-            "passWithNoTests": true,
-            "tsConfig": "libs/remapgl/tsconfig.spec.json"
-          },
-          "outputs": ["coverage/libs/remapgl"]
         }
       }
     }

@@ -1,3 +1,3 @@
-module.exports = {
-  projects: ["<rootDir>/apps/test-app", "<rootDir>/libs/remapgl"]
-};
+const { getJestProjects } = require("@nrwl/jest");
+
+module.exports = { projects: getJestProjects() };
