@@ -39,7 +39,7 @@
         "outputPath": "dist/libs/remapgl",
         "project": "libs/remapgl/package.json",
         "rollupConfig": ["@nrwl/react/plugins/bundle-rollup", "libs/remapgl/rollup.config.js"],
-        "tsConfig": "libs/remapgl/tsconfig.lib.json",
+        "tsconfig": "libs/remapgl/tsconfig.lib.json",
         "updateBuildableProjectDepsInPackageJson": true
       },
       "outputs": ["{options.outputPath}"]
@@ -49,7 +49,7 @@
       "options": {
         "jestConfig": "libs/remapgl/jest.config.ts",
         "passWithNoTests": true,
-        "tsConfig": "libs/remapgl/tsconfig.spec.json"
+        "tsconfig": "libs/remapgl/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/libs/remapgl"]
     }
