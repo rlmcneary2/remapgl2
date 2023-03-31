@@ -5,10 +5,9 @@ export default {
   setupFilesAfterEnv: ["<rootDir>/jest-setup.ts"],
   transform: {
     "^.+\\.[tj]sx?$": [
-      "@swc/jest",
-      { jsc: { transform: { react: { runtime: "automatic" } } } }
+      "babel-jest",
+      { cwd: __dirname, configFile: "./babel-jest.config.json" }
     ]
   },
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
-  coverageDirectory: "../../coverage/libs/remapgl"
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx"]
 };
