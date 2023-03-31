@@ -6,10 +6,11 @@ import mapboxgl from "mapbox-gl";
 
 jest.mock("./map", () => {
   return {
-    Map: React.forwardRef(
-      (props: RemapGLProps, ref: React.ForwardedRef<HTMLDivElement>) =>
+    Map: {
+      $$typeof: Symbol.for("react.forward_ref"),
+      render: (props: RemapGLProps, ref: React.ForwardedRef<HTMLDivElement>) =>
         mockMap(props, ref)
-    )
+    }
   };
 });
 

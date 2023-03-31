@@ -8,7 +8,7 @@ maps with [React](https://reactjs.org/) components.
 ## install
 
 ```bash
-yarn install remapgl
+yarn add remapgl
 ```
 
 ## use
@@ -119,7 +119,6 @@ import {
   FullscreenControl
 } from "remapgl";
 
-
 export function App() {
   return (
     <RemapGL accessToken="your access token">
@@ -142,6 +141,7 @@ to such a component's `obj` prop will be invoked with a single argument that is
 the current instance of the Mapbox GL control.
 
 The following components support the `MbxObj` interface:
+
 - RemapGL: returns `mapboxgl.Map`.
 - Marker: returns: `mapboxgl.Marker`.
 - GeolocateControl: returns `mapboxgl.GeoLocateControl`.
