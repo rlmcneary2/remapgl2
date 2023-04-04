@@ -3,8 +3,7 @@ import { AttributionControl as AttributionControlGL } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
 
 /**
- * Custom attributions for the map.
- * @param props
+ * Display attribution information in a control on the map.
  */
 export function AttributionControl({
   compact = false,
@@ -34,15 +33,23 @@ export function AttributionControl({
   return null;
 }
 
+/**
+ *  Components that implement this interface will display an attribution control
+ *  on the map.
+ * @see
+ * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#attributioncontrol|Mapbox AttributionControl}
+ */
 export interface AttributionControlProps {
   /**
    * The size of the control.
-   * @see https://docs.mapbox.com/mapbox-gl-js/api/markers/#attributioncontrol-parameters
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#attributioncontrol-parameters|Mapbox AttributionControl Parameters}
    */
   compact?: boolean;
   /**
    * Set a custom attribution string.
-   * @see https://docs.mapbox.com/mapbox-gl-js/api/markers/#attributioncontrol-parameters
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#attributioncontrol-parameters|Mapbox AttributionControl Parameters}
    */
   customAttribution?: string | string[];
 }

@@ -9,19 +9,21 @@ import {
 import React from "react";
 
 /**
- * Not all the events from Mapbox have the EventedEvent interface applied. This
- * interface can be extended so that the event argument in the listener has the
- * correct properties.
+ * Not all the events from Mapbox implement the EventedEvent interface. This
+ * interface exists so that such events can be extended so that the `event`
+ * argument in the listener has the missing properties.
+ * @template Type The event type or name.
+ * @template Target The type of the control that raised the event.
+ * @see
+ * {@link https://docs.mapbox.com/mapbox-gl-js/api/events/#evented|Mapbox Evented }
  */
 export interface EventedEvent<Type extends string, Target = unknown> {
   /**
-   * The event's target that raised the event for example `GeoLocateControl`.
-   * @see https://docs.mapbox.com/mapbox-gl-js/api/events/#evented
+   * The control that raised the event for example `GeoLocateControl`.
    */
   target: Target;
   /**
    * The event name; for example "geolocate".
-   * @see https://docs.mapbox.com/mapbox-gl-js/api/events/#evented
    */
   type: Type;
 }
@@ -32,16 +34,18 @@ export interface EventedEvent<Type extends string, Target = unknown> {
 export type AnyLayer = AnyLayerGL & OnEvents<MapLayerEventType>;
 
 /**
- * Provides the Mapbox object that backs the React component. This is similar to
- * React's `ref` concept and working with DOM objects. Implement this interface
- * if a component's prop provider is allowed to access the underlying Mapbox
- * object. Should be implemented whenever the Mapbox object has methods that can
- * only be effectively invoked imperatively.
- * @template T The Mapbox object type.
+ * Provides the Mapbox control that backs the React component. This is similar
+ * to React's `ref` concept and working with DOM objects. Implement this
+ * interface if a component's prop provider is allowed to access the underlying
+ * Mapbox control. Should be implemented whenever the Mapbox control has methods
+ * that can only be effectively invoked imperatively.
+ * @template T The Mapbox control type.
  */
 export interface MbxObj<T> {
   /**
-   * @param obj The Mapbox object of the type specified by T.
+   * Invoked to pass the Mapbox control to the function provider, typically the
+   * parent React component.
+   * @param obj The Mapbox control that backs the React component.
    */
   obj?: (obj: T) => void;
 }
@@ -64,20 +68,22 @@ export interface SymbolIconLayer extends SymbolLayer {
 }
 
 /**
- * Objects that can display a popup implement this interface. The popup
- * component to be displayed can optionally be provided through the `popup`
- * method.
+ * Components that implement this interface can display a popup on the map.
  */
 export interface HasPopup {
   /**
-   * An optional render function that returns a React component to be displayed
-   * as the content of MapboxGL controls that can have a custom popup.
-   * @param popupGL The MapboxGL Popup control associated with the owning
+   * Render function that returns a React component to be displayed as the
+   * content of a custom popup.
+   * @param popupGL The MapboxGL Popup control associated with an owning
    * MapboxGL control.
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#popup|Mapbox Popup}
    */
   popup?: (popupGL: PopupGL) => React.ReactNode;
   /**
-   * Options that are passed to the constructor of MapboxGL Popup control.
+   * Options that are passed to the constructor of the MapboxGL Popup control.
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#popup-parameters|Mapbox Popup Parameters}
    */
   popupOptions?: PopupOptionsGL;
 }
