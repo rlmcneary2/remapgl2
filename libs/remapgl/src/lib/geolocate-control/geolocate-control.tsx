@@ -100,17 +100,50 @@ export type GeolocateEventTypes = {
 };
 
 /**
- * Implemented by an object that allows the user to focus the map on their
- * current location.
+ * Components that implement this interface will allow the user to focus the map
+ * on their current location.
+ * @see
+ * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#geolocatecontrol|Mapbox GeoLocateControl}
  */
 export interface GeolocateControlProps
   extends MbxObj<GeoLocateControlGL>,
     OnEvents<GeolocateEventTypes> {
+  /**
+   * Configuration for how geolocation appears and operates.
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#geolocatecontrol-parameters|Mapbox GeoLocateControl Parameters}
+   */
   options?: {
-    positionOptions?: PositionOptions;
+    /**
+     * Determines the map appearance as it pans / zooms to the user's location.
+     * @see
+     * {@link https://docs.mapbox.com/mapbox-gl-js/api/map/#map#fitbounds|Mapbox fitBounds options}
+     */
     fitBoundsOptions?: FitBoundsOptions;
-    trackUserLocation?: boolean;
+    /**
+     * Configure how the user's location is determined.
+     * @see
+     * {@link https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition#parameters|Mapbox PositionOptions}
+     */
+    positionOptions?: PositionOptions;
+    /**
+     * Display a circle on the map indicating the user's location with 95%
+     * confidence.
+     * @see
+     * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#geolocatecontrol-parameters|Mapbox GeoLocateControl Parameters}
+     */
     showAccuracyCircle?: boolean;
+    /**
+     * Show a dot on the map to indicate the user's location.
+     * @see
+     * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#geolocatecontrol-parameters|Mapbox GeoLocateControl Parameters}
+     */
     showUserLocation?: boolean;
+    /**
+     * Continuously update the user's current location.
+     * @see
+     * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#geolocatecontrol-parameters|Mapbox GeoLocateControl Parameters}
+     */
+    trackUserLocation?: boolean;
   };
 }
