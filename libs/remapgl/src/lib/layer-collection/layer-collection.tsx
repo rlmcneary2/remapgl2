@@ -1,11 +1,12 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { AnyLayer } from "../types";
 import { Layer, LayerProps } from "../layer/layer";
 
 /**
- * The layers to be displayed on the map. Having more than one layer collection
- * is not recommended as the layers in each collection will be treated
- * independently in terms of layer order.
+ * A collection of layers that will be added to the map. Having more than one
+ * layer collection in a single RemapGL component is not recommended - the
+ * layers in each collection will be treated independently in terms of layer
+ * order.
  */
 export function LayerCollection({ layers }: LayerCollectionProps) {
   /** Layers that have actually been added to the mapboxgl Map instance. */
@@ -55,8 +56,18 @@ export function LayerCollection({ layers }: LayerCollectionProps) {
   );
 }
 
+/**
+ * Components that implement this interface will add layers to the map and
+ * manage the order in which they appear in the map.
+ */
 export interface LayerCollectionProps {
-  /** Layers in the map. The order they appear in the map is determined by the
-   * order of elements in the array. */
+  /** Layers in the map. The layers will be added to the map in array order;
+   * e.g. `layers[0]` will be added to the map first then `layers[1]`, etc. The
+   * layer at index 0 will appear visually to be below a layer at index 1. If
+   * the order of the items in the `layers` array is changed the layers in the
+   * map will be changed to reflect the new order.
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/map/#instance-members-layers|Mapbox Layers}
+   */
   layers: AnyLayer[];
 }

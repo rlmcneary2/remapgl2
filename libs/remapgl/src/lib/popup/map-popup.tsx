@@ -19,19 +19,19 @@ export function MapPopup({
   onClose,
   options
 }: React.PropsWithChildren<MapPopupProps>) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement>(null);
   const popup = useRef<PopupGL>(null);
   const { mapGL } = useMapGL();
 
   useEffect(() => {
-    if (!ref || !lngLat || !!popup.current) {
+    if (!ref.current || !lngLat || !!popup.current) {
       return;
     }
 
     const nextPopup = new PopupGL(options ?? {})
-      .setDOMContent((ref as MutableRefObject<HTMLElement>).current)
-      .on("close", () => {
-        onClose && onClose();
+      .setDOMContent(ref.current)
+      .on("close", (...args) => {
+        onClose && onClose(...args);
       })
       .addTo(mapGL);
 
@@ -56,11 +56,23 @@ export function MapPopup({
   return <Popup ref={ref}>{children}</Popup>;
 }
 
+/**
+ * Components that implement this interface display a popup directly on the map.
+ */
 export interface MapPopupProps extends MbxObj<PopupGL> {
   /** The location of the popup on the map. */
   lngLat: LngLatLike;
-  /** Invoked when the popup is closed. */
-  onClose?: () => void;
-  /** Options that affect the display of the map. */
+  /**
+   * Invoked when the popup is closed.
+   * @param args Any args from the close event will be passed to `onClose`.
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#popup.event:close|Mapbox Popup close event}
+   */
+  onClose?: (...args: unknown[]) => void;
+  /**
+   * Options that affect the display of the popup.
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker-parameters|Mapbox Popup Parameters}
+   */
   options?: PopupOptionsGL;
 }

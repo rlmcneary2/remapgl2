@@ -1,8 +1,10 @@
 {
-  "entryPoints": "libs/remapgl/src/index.ts",
+  "disableSources": true,
+  "entryPoints": ["libs/remapgl/src/index.ts"],
   "includeVersion": true,
   "githubPages": true,
   "gitRevision": "main",
   "out": "docs",
+  "sort": ["required-first", "alphabetical"],
   "tsconfig": "libs/remapgl/tsconfig.lib.json"
 }

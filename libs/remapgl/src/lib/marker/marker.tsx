@@ -99,4 +99,3 @@ export function Marker({
 }
 
 export type MarkerProps = HasPopup & MbxObj<MarkerGL> & MarkerOptions;
-

@@ -25,4 +25,3 @@ export const Popup = React.forwardRef<
     ? (ReactDOM.createPortal(children, element) as React.ReactElement)
     : null;
 });
-
