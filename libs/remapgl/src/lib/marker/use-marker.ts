@@ -122,8 +122,17 @@ type MarkerEventType = {
   dragend: MapboxEvent<MouseEvent | TouchEvent | undefined>;
 };
 
+/**
+ * Objects that implement this interface will create or interact with a marker
+ * control.
+ * @see
+ * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker-parameters|Mapbox Marker Parameters}
+ */
 export interface MarkerOptions
   extends Omit<MarkerOptionsGL, "element">,
     OnEvents<MarkerEventType> {
+  /**
+   * The location of the marker on the map.
+   */
   lnglat: LngLatLike;
 }

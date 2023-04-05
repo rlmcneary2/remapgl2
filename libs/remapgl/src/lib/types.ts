@@ -74,14 +74,14 @@ export interface HasPopup {
   /**
    * Render function that returns a React component to be displayed as the
    * content of a custom popup.
-   * @param popupGL The MapboxGL Popup control associated with an owning
-   * MapboxGL control.
+   * @param popupGL The Mapbox Popup control associated with an owning
+   * Mapbox control.
    * @see
    * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#popup|Mapbox Popup}
    */
   popup?: (popupGL: PopupGL) => React.ReactNode;
   /**
-   * Options that are passed to the constructor of the MapboxGL Popup control.
+   * Options that are passed to the constructor of the Mapbox Popup control.
    * @see
    * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#popup-parameters|Mapbox Popup Parameters}
    */
