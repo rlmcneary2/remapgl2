@@ -3,9 +3,10 @@ import { FullscreenControl as FullscreenControlGL } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
 
 /**
- * Add a control to make the map fullscreen.
+ * Add a control that allows the user to toggle the map in and out of
+ * fullscreen.
  */
-export function FullscreenControl() {
+export function FullscreenControl(): null {
   const [, setControl] = useState<FullscreenControlGL>(null);
   const { mapGL } = useMapGL();
 

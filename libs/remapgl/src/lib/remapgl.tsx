@@ -7,7 +7,9 @@ import { Provider } from "./context/context-provider";
 import { Map } from "./map";
 
 /**
- * The root component; add other remapgl components as children to create a map.
+ * The root component of the remapgl library; add other remapgl components as
+ * children to create a map.
+ * @param props
  */
 export const RemapGL = React.forwardRef<HTMLDivElement, RemapGLProps>(
   function RemapGLImpl({ children, ...props }, ref) {
@@ -29,7 +31,8 @@ Object.defineProperties(RemapGL, {
 });
 
 /**
- * Props for a component that renders a map to the page.
+ * Components that implement this type render a map to the page inside a `<div>`
+ * element.
  */
 export type RemapGLProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -37,11 +40,3 @@ export type RemapGLProps = React.DetailedHTMLProps<
 > &
   MapOptions &
   MbxObj<MapGL>;
-
-export interface RemapGLGlobal
-  extends React.ForwardRefExoticComponent<
-    React.PropsWithoutRef<RemapGLProps> & React.RefAttributes<HTMLDivElement>
-  > {
-  defaultMapboxGLCss: string;
-  defaultMapboxGLStyle: string;
-}

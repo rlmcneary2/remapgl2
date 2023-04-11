@@ -10,6 +10,7 @@ import { useMapGL } from "../context/use-mapgl";
 /**
  * Represents a layer that will be added to the map.
  * @description No elements are created in the DOM by this component.
+ * @param props
  */
 export function Layer({
   addedLayers,

@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   LngLatLike,
   Popup as PopupGL,
@@ -11,6 +11,7 @@ import { Popup } from "./popup";
 /**
  * Display a Popup object directly on the Map. The children of this component
  * are displayed as the Popup contents.
+ * @param props
  */
 export function MapPopup({
   children,
@@ -58,6 +59,7 @@ export function MapPopup({
 
 /**
  * Components that implement this interface display a popup directly on the map.
+ * @see {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#popup Mapbox Popup}
  */
 export interface MapPopupProps extends MbxObj<PopupGL> {
   /** The location of the popup on the map. */
@@ -66,13 +68,13 @@ export interface MapPopupProps extends MbxObj<PopupGL> {
    * Invoked when the popup is closed.
    * @param args Any args from the close event will be passed to `onClose`.
    * @see
-   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#popup.event:close|Mapbox Popup close event}
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#popup.event:close Mapbox Popup close event}
    */
   onClose?: (...args: unknown[]) => void;
   /**
    * Options that affect the display of the popup.
    * @see
-   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker-parameters|Mapbox Popup Parameters}
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker-parameters Mapbox Popup Parameters}
    */
   options?: PopupOptionsGL;
 }

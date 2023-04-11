@@ -1,5 +1,5 @@
 {
-  "disableSources": true,
+  "disableSources": false,
   "entryPoints": ["libs/remapgl/src/index.ts"],
   "includeVersion": true,
   "githubPages": true,

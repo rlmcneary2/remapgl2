@@ -7,7 +7,10 @@ import { useMarker } from "./use-marker";
 import { Popup } from "../popup/popup";
 
 /**
- * Displays a Marker component on the map.
+ * Display a Marker control on the map. If optional `children` are provided they
+ * will be displayed as the marker image, otherwise a default Mapbox image will
+ * be used for the marker.
+ * @param props
  */
 export function Marker({
   children,
@@ -98,4 +101,7 @@ export function Marker({
   );
 }
 
+/**
+ * Components that implement this type will display a marker on the map.
+ */
 export type MarkerProps = HasPopup & MbxObj<MarkerGL> & MarkerOptions;
