@@ -4,6 +4,10 @@ import { MapOptions } from "./types";
 import { DEFAULT_MAPBOXGL_CSS, DEFAULT_MAPBOX_STYLE } from "../constants";
 import { Context } from "./context";
 
+/**
+ * A React hook to be used inside React components that need access to the
+ * Mapbox Map control.
+ */
 export function useMapGL(options?: MapOptions) {
   const { mapGL, setMapGL } = useContext(Context);
   const [cssStatus, setCssStatus] = useState<"error" | "loaded">(null);

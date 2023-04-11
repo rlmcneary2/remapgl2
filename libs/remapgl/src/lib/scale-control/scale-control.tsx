@@ -3,7 +3,7 @@ import { ScaleControl as ScaleControlGL } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
 
 /**
- * Scale control displayed on the map.
+ * A scale control that indicates the scale at the current zoom level.
  * @param props
  */
 export function ScaleControl({ maxWidth, unit }: ScaleControlProps) {
@@ -39,7 +39,22 @@ export function ScaleControl({ maxWidth, unit }: ScaleControlProps) {
   return null;
 }
 
+/**
+ * Implemented by components that display a scale control on the map.
+ * @see
+ * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#scalecontrol Mapbox ScaleControl}
+ */
 export interface ScaleControlProps {
+  /**
+   * Maximum length of the scale control on the display in pixels; defaults to 100.
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#scalecontrol-parameters Mapbox ScaleControl Parameters}
+   */
   maxWidth?: number;
+  /**
+   * Distance units; defaults to "metric".
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#scalecontrol-parameters Mapbox ScaleControl Parameters}
+   */
   unit?: "imperial" | "metric" | "nautical";
 }

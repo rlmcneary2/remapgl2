@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { render, screen } from "@testing-library/react";
-import type { RemapGLGlobal, RemapGLProps } from "./remapgl";
+import type { RemapGLProps } from "./remapgl";
 import { RemapGL } from "./remapgl";
 import mapboxgl from "mapbox-gl";
 
@@ -28,10 +28,10 @@ describe("RemapGL", () => {
     );
 
     expect(screen.getByTestId("MAP")).toBeInTheDocument();
-    expect((RemapGL as RemapGLGlobal).defaultMapboxGLCss).toBe(
+    expect((RemapGL as any).defaultMapboxGLCss).toBe(
       "//api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css"
     );
-    expect((RemapGL as RemapGLGlobal).defaultMapboxGLStyle).toBe(
+    expect((RemapGL as any).defaultMapboxGLStyle).toBe(
       "mapbox://styles/mapbox/outdoors-v11"
     );
     expect(mockMap).toHaveBeenCalledTimes(1);

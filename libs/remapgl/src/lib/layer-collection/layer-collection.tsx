@@ -7,6 +7,8 @@ import { Layer, LayerProps } from "../layer/layer";
  * layer collection in a single RemapGL component is not recommended - the
  * layers in each collection will be treated independently in terms of layer
  * order.
+ * @param props
+ * @see {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/ Mapbox Layers}
  */
 export function LayerCollection({ layers }: LayerCollectionProps) {
   /** Layers that have actually been added to the mapboxgl Map instance. */
@@ -59,6 +61,7 @@ export function LayerCollection({ layers }: LayerCollectionProps) {
 /**
  * Components that implement this interface will add layers to the map and
  * manage the order in which they appear in the map.
+ * @see {@link https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/ Mapbox Layers}
  */
 export interface LayerCollectionProps {
   /** Layers in the map. The layers will be added to the map in array order;
@@ -67,7 +70,7 @@ export interface LayerCollectionProps {
    * the order of the items in the `layers` array is changed the layers in the
    * map will be changed to reflect the new order.
    * @see
-   * {@link https://docs.mapbox.com/mapbox-gl-js/api/map/#instance-members-layers|Mapbox Layers}
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/map/#instance-members-layers Mapbox Map Layers}
    */
   layers: AnyLayer[];
 }

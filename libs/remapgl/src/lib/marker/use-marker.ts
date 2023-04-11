@@ -92,7 +92,7 @@ export function useMarker(
     }
 
     for (const type of Object.keys(on)) {
-      const name = type as keyof MarkerEventType;
+      const name = type as keyof MarkerEventTypes;
       if (name === "drag" || name === "dragend" || name === "dragstart") {
         marker.on(name, on[name]);
       } else {
@@ -102,7 +102,7 @@ export function useMarker(
 
     return () => {
       for (const type of Object.keys(on)) {
-        const name = type as keyof MarkerEventType;
+        const name = type as keyof MarkerEventTypes;
         if (name === "drag" || name === "dragend" || name === "dragstart") {
           marker.off(name, on[name]);
         } else {
@@ -115,10 +115,30 @@ export function useMarker(
   return marker;
 }
 
-type MarkerEventType = {
+/**
+ * Marker events that implement the EventedEvent interface.
+ * @see
+ * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker-events Mapbox Marker}
+ */
+type MarkerEventTypes = {
+  /**
+   * Emitted when the Marker is clicked.
+   */
   click: MouseEvent | PointerEvent;
+  /**
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker.event:dragstart Mapbox Marker dragstart event}
+   */
   dragstart: MapboxEvent<MouseEvent | TouchEvent | undefined>;
+  /**
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker.event:drag Mapbox Marker dragstart event}
+   */
   drag: MapboxEvent<MouseEvent | TouchEvent | undefined>;
+  /**
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker.event:dragend Mapbox Marker dragend event}
+   */
   dragend: MapboxEvent<MouseEvent | TouchEvent | undefined>;
 };
 
@@ -126,11 +146,11 @@ type MarkerEventType = {
  * Objects that implement this interface will create or interact with a marker
  * control.
  * @see
- * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker-parameters|Mapbox Marker Parameters}
+ * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker-parameters Mapbox Marker Parameters}
  */
 export interface MarkerOptions
   extends Omit<MarkerOptionsGL, "element">,
-    OnEvents<MarkerEventType> {
+    OnEvents<MarkerEventTypes> {
   /**
    * The location of the marker on the map.
    */
