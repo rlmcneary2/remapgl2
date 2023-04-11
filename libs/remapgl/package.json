@@ -4,7 +4,8 @@
   },
   "bugs": "https://github.com/rlmcneary2/remapgl2/issues",
   "description": "Declarative Mapbox GL bindings <🌎>",
-  "homepage": "https://github.com/rlmcneary2/remapgl2/",
+  "homepage": "https://limnous.com/remapgl2/",
+  "repository": "https://github.com/rlmcneary2/remapgl2",
   "keywords": [
     "map",
     "mapbox",
@@ -12,7 +13,7 @@
     "react"
   ],
   "name": "remapgl",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.21"
