@@ -2,7 +2,7 @@
 
 React components to create mapbox-gl maps declaratively.
 
-Details here: [libs/remapgl/README.md](libs/remapgl/README.md)
+Read the [docs at limnous](https://limnous.com/remapgl2/) for API and usage details.
 
 ## Publish
 
