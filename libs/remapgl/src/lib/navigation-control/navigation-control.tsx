@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import { IControl, NavigationControl as NavigationControlGL } from "mapbox-gl";
+import type { IControl } from "mapbox-gl";
+import { Map, NavigationControl as NavigationControlGL } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
 
 /**
@@ -7,6 +8,7 @@ import { useMapGL } from "../context/use-mapgl";
  * @param props
  */
 export function NavigationControl({
+  position,
   showCompass,
   showZoom,
   visualizePitch
@@ -25,13 +27,13 @@ export function NavigationControl({
       visualizePitch
     });
 
-    mapGL.addControl(control.current);
+    mapGL.addControl(control.current, position);
 
     return () => {
       mapGL.removeControl(control.current);
       control.current = null;
     };
-  }, [mapGL, showCompass, showZoom, visualizePitch]);
+  }, [mapGL, position, showCompass, showZoom, visualizePitch]);
 
   return null;
 }
@@ -43,6 +45,13 @@ export function NavigationControl({
  * {@link https://docs.mapbox.com/mapbox-gl-js/api/markers/#navigationcontrol-parameters}
  */
 export interface NavigationControlProps {
+  /**
+   * Optionally specify where the control will be displayed on the map; defaults
+   * to `top-right`.
+   * @see
+   * {@link https://docs.mapbox.com/mapbox-gl-js/api/map/#addcontrol-parameters Mapbox addControl Parameters}
+   */
+  position?: Parameters<InstanceType<typeof Map>["addControl"]>[1];
   /**
    * Display a compass control; defaults to `true`.
    * @see
