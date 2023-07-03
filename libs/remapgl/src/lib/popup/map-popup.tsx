@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   LngLatLike,
   Popup as PopupGL,
@@ -19,41 +19,51 @@ export function MapPopup({
   onClose,
   options
 }: React.PropsWithChildren<MapPopupProps>) {
-  const ref = useRef(null);
-  const popup = useRef<PopupGL>(null);
+  const [ref, setRef] = useState<HTMLElement>(null);
+  const [popupGL, setPopupGL] = useState<PopupGL>(null);
   const { mapGL } = useMapGL();
 
   useEffect(() => {
-    if (!ref || !lngLat || !!popup.current) {
+    // console.log(
+    //   `MapPopup: ref=${typeof ref}, lngLat=%o, popup=`,
+    //   lngLat,
+    //   popup
+    // );
+
+    if (!ref || !lngLat || popupGL) {
       return;
     }
 
     const nextPopup = new PopupGL(options ?? {})
-      .setDOMContent((ref as MutableRefObject<HTMLElement>).current)
+      .setDOMContent(ref)
       .on("close", () => {
         onClose && onClose();
       })
       .addTo(mapGL);
 
-    popup.current = nextPopup;
+    // popup.current = nextPopup;
 
     obj && obj(nextPopup);
 
+    setPopupGL(nextPopup);
+
     return () => {
       nextPopup.remove();
-      popup.current = null;
+      setPopupGL(null);
     };
-  }, [lngLat, mapGL, obj, onClose, options]);
+  }, [lngLat, mapGL, obj, onClose, options, popupGL /*, ref*/]);
 
   useEffect(() => {
-    if (!popup.current) {
+    console.log(`MapPopup: popup=`, popupGL);
+
+    if (!popupGL) {
       return;
     }
 
-    lngLat && popup.current.setLngLat(lngLat);
-  }, [lngLat, popup]);
+    lngLat && popupGL.setLngLat(lngLat);
+  }, [lngLat, popupGL]);
 
-  return <Popup ref={ref}>{children}</Popup>;
+  return <Popup ref={setRef}>{children}</Popup>;
 }
 
 export interface MapPopupProps extends MbxObj<PopupGL> {

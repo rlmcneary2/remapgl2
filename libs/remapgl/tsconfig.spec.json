@@ -7,7 +7,7 @@
   },
   "include": [
     "jest-setup.ts",
-    "src/**/__mock__/**/*tsx",
+    "src/**/__mocks__/**/*.ts",
     "**/*.spec.ts",
     "**/*.test.ts",
     "**/*.spec.tsx",

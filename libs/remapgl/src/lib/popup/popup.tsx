@@ -9,6 +9,7 @@ export const Popup = React.forwardRef<
 
   useEffect(() => {
     const el = document.createElement("div");
+    el.setAttribute("data-testid", "popup-container");
     setElement(el);
     return () => setElement(null);
   }, []);

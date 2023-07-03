@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { Marker as MarkerGL, Popup as PopupGL } from "mapbox-gl";
 import type { MarkerProps } from "./marker";
 import { useMarker } from "./use-marker";
@@ -80,10 +80,11 @@ describe("Marker", () => {
     mockPopupGLConstructor.mockImplementation(opts => {
       mockPopupGL = new MockPopupGL({
         ...opts,
-        setDOMContent: jest.fn(popupElement =>
+        setDOMContent: jest.fn<PopupGL, [Node]>(popupElement => {
           // The popupElement is appended as a sibling of the container.
-          container.parentElement.appendChild(popupElement)
-        ) as any
+          container.parentElement.appendChild(popupElement);
+          return mockPopupGL as PopupGL;
+        })
       });
 
       return mockPopupGL;

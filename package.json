@@ -18,7 +18,7 @@
     "format:check": "nx format:check",
     "format:write": "nx format:write",
     "help": "nx help",
-    "lint": "nx workspace-lint && nx lint",
+    "lint": "nx lint",
     "nx": "nx",
     "start": "nx serve",
     "test": "nx test",

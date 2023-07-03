@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { Map as MapGL } from "mapbox-gl";
 import { useMapGL } from "../context/use-mapgl";
 import type { LayerProps } from "./layer";
