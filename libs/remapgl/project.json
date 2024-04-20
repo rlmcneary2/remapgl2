@@ -6,7 +6,7 @@
   "generators": {},
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/remapgl/**/*.js",
@@ -32,20 +32,23 @@
             "output": "."
           }
         ],
-        "babelConfig": "@nrwl/react/plugins/bundle-babel",
+        "babelConfig": "@nx/react/plugins/bundle-babel",
         "buildableProjectDepsInPackageJsonType": "peerDependencies",
         "entryFile": "libs/remapgl/src/index.ts",
         "format": ["esm"],
         "outputPath": "dist/libs/remapgl",
         "project": "libs/remapgl/package.json",
-        "rollupConfig": ["@nrwl/react/plugins/bundle-rollup", "libs/remapgl/rollup.config.js"],
+        "rollupConfig": [
+          "@nx/react/plugins/bundle-rollup",
+          "libs/remapgl/rollup.config.js"
+        ],
         "tsConfig": "libs/remapgl/tsconfig.lib.json",
         "updateBuildableProjectDepsInPackageJson": true
       },
       "outputs": ["{options.outputPath}"]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "options": {
         "jestConfig": "libs/remapgl/jest.config.ts",
         "passWithNoTests": true,
