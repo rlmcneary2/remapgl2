@@ -32,7 +32,7 @@
     "core-js": "3.36.1",
     "document-register-element": "1.13.1",
     "lodash": "^4.17.21",
-    "mapbox-gl": "^2.1.1",
+    "mapbox-gl": "^2.15.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-is": "18.2.0"
@@ -44,6 +44,7 @@
     "@babel/preset-typescript": "7.9.0",
     "@nrwl/rollup": "18.3.3",
     "@nx/cypress": "18.3.3",
+    "@nx/eslint": "18.3.3",
     "@nx/eslint-plugin": "18.3.3",
     "@nx/jest": "18.3.3",
     "@nx/js": "18.3.3",
@@ -88,12 +89,10 @@
     "ts-jest": "29.1.2",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
-    "typedoc": "^0.24.7",
+    "typedoc": "^0.25.13",
     "typescript": "5.4.5",
     "url-loader": "^4.1.1",
     "webpack": "5.91.0",
-    "webpack-merge": "^5.8.0",
-    "@nx/eslint": "18.3.3"
+    "webpack-merge": "^5.8.0"
   }
 }
-
