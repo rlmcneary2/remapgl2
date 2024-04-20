@@ -6,20 +6,7 @@
   "generators": {},
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "libs/remapgl/**/*.js",
-          "libs/remapgl/**/*.jsx",
-          "libs/remapgl/**/*.ts",
-          "libs/remapgl/**/*.tsx",
-          "libs/remapgl/**/*.spec.ts",
-          "libs/remapgl/**/*.spec.tsx",
-          "libs/remapgl/**/*.spec.js",
-          "libs/remapgl/**/*.spec.jsx",
-          "libs/remapgl/**/*.d.ts"
-        ]
-      },
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     },
     "build": {
@@ -51,7 +38,6 @@
       "executor": "@nx/jest:jest",
       "options": {
         "jestConfig": "libs/remapgl/jest.config.ts",
-        "passWithNoTests": true,
         "tsconfig": "libs/remapgl/tsconfig.spec.json"
       },
       "outputs": ["{workspaceRoot}/coverage/libs/remapgl"]
