@@ -1,5 +1,9 @@
 # remapgl project
 
+> [!CAUTION]
+> This repository is archived.
+> See [remapgl at Codeberg](https://codeberg.org/rlmcneary2/remapgl) for new development.
+
 React components to create mapbox-gl maps declaratively.
 
 Read the [docs at limnous](https://limnous.com/remapgl2/) for API and usage details.
